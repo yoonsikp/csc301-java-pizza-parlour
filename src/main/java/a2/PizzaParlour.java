@@ -11,9 +11,9 @@ public class PizzaParlour {
 
     public static void main(String[] args) {
 
-
-        TerminalReader myTerminalReader = new TerminalReader();
-        myTerminalReader.startReading();
+        MenuLoader.getPopulatedMenu("menu.json");
+        //TerminalReader myTerminalReader = new TerminalReader();
+        //myTerminalReader.startReading();
 
 //        BufferedReader reader;
 //        try {
