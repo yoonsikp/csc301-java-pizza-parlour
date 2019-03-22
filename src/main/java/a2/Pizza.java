@@ -5,6 +5,7 @@ class Pizza extends Food {
     private String toppings;
 
     public void setSize(String pizzaSize) {
+        this.size = pizzaSize;
     }
 
     public void removeTopping(String s) {
@@ -14,7 +15,7 @@ class Pizza extends Food {
     }
 
     public String getSize() {
-        return size;
+        return this.size;
     }
 
     public String getToppings() {
