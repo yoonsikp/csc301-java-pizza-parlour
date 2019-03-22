@@ -22,7 +22,12 @@ public class OrderHandler {
         return nextOrderID;
     }
     public Order getOrder(String orderID) {
-        return allOrdersMap.get(orderID);
+        if (allOrdersMap.containsKey(orderID)) {
+            return allOrdersMap.get(orderID);
+        } else {
+            return null;
+        }
+
     }
 
     public List<Order> getAllOrders() {
