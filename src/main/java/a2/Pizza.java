@@ -1,8 +1,8 @@
 package a2;
 
-public class Pizza extends Food {
-    public void setType(String pizzaSize) {
-    }
+class Pizza extends Food {
+    private String size;
+    private String toppings;
 
     public void setSize(String pizzaSize) {
     }
@@ -11,5 +11,13 @@ public class Pizza extends Food {
     }
 
     public void addTopping(String s) {
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public String getToppings() {
+        return toppings;
     }
 }

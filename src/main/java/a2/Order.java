@@ -26,4 +26,8 @@ public class Order {
     public String getID() {
         return "3";
     }
+
+    public void removeFood(Food currentFood) {
+
+    }
 }
