@@ -49,19 +49,19 @@ public class TerminalReader {
     }
 
     private void handleOrderState(String[] command){
-        if (command[0].equals("neword") && command.length == 1) {
+        if (command[0].equals("neworder") && command.length == 1) {
             System.out.println("Order Created: Try 'newdish pizza'");
             this.currentOrder = this.orderHandler.createOrder();
             return;
         }
-        else if (command[0].equals("selord") && command.length == 2) {
+        else if (command[0].equals("selorder") && command.length == 2) {
             System.out.println("Order Selected:");
             this.currentOrder = this.orderHandler.getOrder(command[1]);
             if (currentOrder == null){
                 System.out.println("Order ID not found");
             }
             return;
-        } else if (command[0].equals("selord") && command.length == 1) {
+        } else if (command[0].equals("selorder") && command.length == 1) {
             List <Order> allOrders = this.orderHandler.getAllOrders();
             if (allOrders.size() == 0) {
                 System.out.println("No Current Orders");
@@ -75,7 +75,7 @@ public class TerminalReader {
             }
             return;
         }
-        else if (command[0].equals("lsord") && command.length == 1) {
+        else if (command[0].equals("lsorder") && command.length == 1) {
             List <Order> allOrders = this.orderHandler.getAllOrders();
             if (allOrders.size() == 0) {
                 System.out.println("No Current Orders");
@@ -212,7 +212,7 @@ public class TerminalReader {
 
         System.out.println("Welcome to 301 Pizza Parlour");
         System.out.println("Type '?' at any time for help. End program by typing 'exit'.");
-        System.out.printf(">$ ");
+        System.out.printf("/$ ");
         genInput = this.streamScanner.nextLine();
 
         while(!genInput.equals("exit")){
@@ -223,34 +223,34 @@ public class TerminalReader {
             } else if (command[0].equals("menuitem") && command.length == 2) {
                 System.out.println("this is the menu item");
             } else if (this.currentOrder == null && this.currentFood == null) {
-                if (command[0].equals("?")) {
-                    System.out.println("\tmenu              \tPrint out the Current Menu");
-                    System.out.println("\tmenuitem ITEM     \tPrint out the Price of a Menu Item");
-                    System.out.println("\tneword            \tCreate an Order at the Pizza Parlour");
-                    System.out.println("\tselord [ORDER_ID] \tSelect an Order, can optionally specify ID");
-                    System.out.println("\tlsord             \tList all Current Orders and their IDs");
+                if (command[0].equals("?") || command[0].equals("help")) {
+                    System.out.println("\tmenu               \tPrint out the Current Menu");
+                    System.out.println("\tmenuitem ITEM      \tPrint out the Price of a Menu Item");
+                    System.out.println("\tneworder           \tCreate an Order at the Pizza Parlour");
+                    System.out.println("\tselorder [ORDER_ID]\tSelect an Order, can optionally specify ID");
+                    System.out.println("\tlsorder            \tList all Current Orders and their IDs");
                 }
                 else {
                     handleOrderState(command);
                 }
             }
             else if (this.currentOrder != null && this.currentFood == null) {
-                if (command[0].equals("?")) {
+                if (command[0].equals("?") || command[0].equals("help")) {
                     System.out.println("\tmenu              \tPrint out the Current Menu");
                     System.out.println("\tmenuitem ITEM     \tPrint out the Price of a Menu Item");
-                    System.out.println("\trmord             \tCancel the Currently Selected Order");
+                    System.out.println("\trmorder           \tCancel the Currently Selected Order");
                     System.out.println("\tdeliver           \tRequest for Delivery Service");
                     System.out.println("\trmdeliver         \tCancel Delivery Service");
-                    System.out.println("\tprintord          \tDetails about the Current Order");
+                    System.out.println("\tprintorder        \tDetails about the Current Order");
                     System.out.println("\tnewdish pizza     \tAdd a Pizza to the Current Order");
                     System.out.println("\tnewdish drink     \tAdd a Drink to the Current Order");
                     System.out.println("\tseldish           \tSelect a Dish in the Current Order");
                     System.out.println("\tlsdish            \tList all Dishes in the Current Order");
-                    System.out.println("\t..              \tDeselect Currently Selected Order");
+                    System.out.println("\t..                \tDeselect Currently Selected Order");
                 } else if (command[0].equals("..") && command.length == 1) {
                     this.currentOrder = null;
                 }
-                else if (command[0].equals("rmord") && command.length == 1) {
+                else if (command[0].equals("rmorder") && command.length == 1) {
                     System.out.println("we canceled the order, you can now create other orders");
                     this.orderHandler.removeOrder(this.currentOrder);
                     this.currentOrder = null;
@@ -261,14 +261,14 @@ public class TerminalReader {
                 else if (command[0].equals("rmdeliver") && command.length == 1) {
                     this.deliveryHandler.removeDelivery(this.currentOrder);
                 }
-                else if (command[0].equals("printord") && command.length == 1) {
+                else if (command[0].equals("printorder") && command.length == 1) {
                     prettyPrintCurrentOrder();
                 } else {
                     handleFoodState(command);
                 }
             }
             else if (this.currentOrder != null && this.currentFood != null) {
-                if (command[0].equals("?")) {
+                if (command[0].equals("?") || command[0].equals("help")) {
                     System.out.println("\tmenu              \tPrint out the Current Menu");
                     System.out.println("\tmenuitem ITEM     \tPrint out the Price of a Menu Item");
                     System.out.println("\tchdish            \tModify the Current Dish");
@@ -344,13 +344,13 @@ public class TerminalReader {
                     System.out.println("Invalid Command");
                 }
             }
-            StringBuilder tempSB = new StringBuilder(">");
+            StringBuilder tempSB = new StringBuilder("/");
             if (this.currentOrder != null) {
                 tempSB.append("Order_");
                 tempSB.append(this.currentOrder.getOrderID());
             }
             if (this.currentFood != null) {
-                tempSB.append(">");
+                tempSB.append("/");
                 tempSB.append("Food_");
                 tempSB.append(this.currentFood.toString());
             }
