@@ -12,10 +12,9 @@ public class PizzaParlour {
 
         System.out.println("Welcome to 301 Pizza!: ");
         System.out.println("Would you like to order in, or make a delivery order?: ");
-        Scanner scanner = new Scanner(System.in);
-        String orderType = scanner.nextLine();
 
-        scanner.close();
+
+        
 
         BufferedReader reader;
         try {
@@ -39,6 +38,7 @@ public class PizzaParlour {
             genInput = in.nextLine();
 
         }
+        in.close();
 
     }
 
