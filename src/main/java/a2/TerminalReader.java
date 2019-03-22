@@ -189,6 +189,63 @@ public class TerminalReader {
         System.out.println("Invalid Command");
     }
 
+    private void modifyDish() {
+
+        if (this.currentFood instanceof Drink) {
+            System.out.printf("Current Drink Type: ");
+            System.out.println(this.currentFood.getType());
+            System.out.println("Change to ... (Press Enter to Skip)");
+            List<String> drinks = this.currentMenu.getDrinks();
+            printOptions(drinks);
+            String response = this.streamScanner.nextLine();
+            if (!response.equals("")) {
+                this.currentFood.setType(drinks.get(Integer.parseInt(response)));
+                System.out.println("Drink Successfully Modified");
+            } else {
+                System.out.println("Drink Not Modified");
+            }
+
+        } else if (this.currentFood instanceof Pizza){
+            boolean modBit = false;
+            Pizza currPizza = (Pizza) this.currentFood;
+            System.out.printf("Current Pizza Type: ");
+            System.out.println(currPizza.getType());
+            System.out.println("Change to ... (Press Enter to Skip)");
+            List<String> pizzaTypes = this.currentMenu.getPizzaTypes();
+            printOptions(pizzaTypes);
+            String response = this.streamScanner.nextLine();
+            if (!response.equals("")) {
+                currPizza.setType(pizzaTypes.get(Integer.parseInt(response)));
+                modBit = true;
+            }
+
+            System.out.printf("Current Pizza Size: ");
+            System.out.println(currPizza.getSize());
+            System.out.println("Change to ... (Press Enter to Skip)");
+            List<String> pizzaSizes = this.currentMenu.getPizzaSizes(currPizza.getType());
+            printOptions(pizzaSizes);
+            response = this.streamScanner.nextLine();
+            if (!response.equals("")) {
+                currPizza.setSize(pizzaSizes.get(Integer.parseInt(response)));
+                modBit = true;
+            }
+            List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
+            if (pizzaToppings.size() > 0) {
+                System.out.printf("Current Toppings: ");
+                System.out.println(currPizza.getToppings());
+                System.out.println("Increase or Decrease (minus sign) Toppings ... (Press Enter to Skip)");
+                if (addToppingsToPizza(currPizza) > 0) modBit = true;
+            }
+
+            if (modBit) {
+                System.out.println("Pizza Successfully Modified");
+            } else {
+                System.out.println("Pizza Not Modified");
+            }
+        } else {
+            System.out.println("Dish Type can't be modified");
+        }
+    }
     private void prettyPrintCurrentOrder(){
         System.out.println("List of Dishes");
         List<Food> foods = this.currentOrder.getFoods();
@@ -282,64 +339,8 @@ public class TerminalReader {
                     this.currentFood = null;
                 } else if (command[0].equals("printdish") && command.length == 1) {
                     System.out.println(this.currentFood.toString());
-
                 } else if (command[0].equals("chdish") && command.length == 1) {
-
-                    if (this.currentFood instanceof Drink) {
-                        System.out.printf("Current Drink Type: ");
-                        System.out.println(this.currentFood.getType());
-                        System.out.println("Change to ... (Press Enter to Skip)");
-                        List<String> drinks = this.currentMenu.getDrinks();
-                        printOptions(drinks);
-                        String response = this.streamScanner.nextLine();
-                        if (!response.equals("")) {
-                            this.currentFood.setType(drinks.get(Integer.parseInt(response)));
-                            System.out.println("Drink Successfully Modified");
-                        } else {
-                            System.out.println("Drink Not Modified");
-                        }
-
-                    } else if (this.currentFood instanceof Pizza){
-                        boolean modBit = false;
-                        Pizza currPizza = (Pizza) this.currentFood;
-                        System.out.printf("Current Pizza Type: ");
-                        System.out.println(currPizza.getType());
-                        System.out.println("Change to ... (Press Enter to Skip)");
-                        List<String> pizzaTypes = this.currentMenu.getPizzaTypes();
-                        printOptions(pizzaTypes);
-                        String response = this.streamScanner.nextLine();
-                        if (!response.equals("")) {
-                            currPizza.setType(pizzaTypes.get(Integer.parseInt(response)));
-                            modBit = true;
-                        }
-
-                        System.out.printf("Current Pizza Size: ");
-                        System.out.println(currPizza.getSize());
-                        System.out.println("Change to ... (Press Enter to Skip)");
-                        List<String> pizzaSizes = this.currentMenu.getPizzaSizes(currPizza.getType());
-                        printOptions(pizzaSizes);
-                        response = this.streamScanner.nextLine();
-                        if (!response.equals("")) {
-                            currPizza.setSize(pizzaSizes.get(Integer.parseInt(response)));
-                            modBit = true;
-                        }
-                        List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
-                        if (pizzaToppings.size() > 0) {
-                            System.out.printf("Current Toppings: ");
-                            System.out.println(currPizza.getToppings());
-                            System.out.println("Increase or Decrease (minus sign) Toppings ... (Press Enter to Skip)");
-                            if (addToppingsToPizza(currPizza) > 0) modBit = true;
-                        }
-
-                        if (modBit) {
-                            System.out.println("Pizza Successfully Modified");
-                        } else {
-                            System.out.println("Pizza Not Modified");
-                        }
-                    } else {
-                        System.out.println("Dish Type can't be modified");
-                    }
-
+                    modifyDish();
                 } else {
                     System.out.println("Invalid Command");
                 }
