@@ -8,12 +8,12 @@ import java.util.Scanner;
 
 public class PizzaParlour {
 
-
+    private static Menu myMenu;
     public static void main(String[] args) {
 
-        MenuLoader.getPopulatedMenu("menu.json");
-        //TerminalReader myTerminalReader = new TerminalReader();
-        //myTerminalReader.startReading();
+        myMenu = MenuLoader.getPopulatedMenu("menu.json");
+        TerminalReader myTerminalReader = new TerminalReader();
+        myTerminalReader.startReading();
 
 //        BufferedReader reader;
 //        try {
@@ -28,7 +28,14 @@ public class PizzaParlour {
 
     }
     public static Menu getMenu() {
-        return new Menu();
+        return myMenu;
     }
 
+    public static OrderHandler getOrderHandler() {
+        return new OrderHandler();
+    }
+
+    public static DeliveryHandler getDeliveryHandler() {
+        return new DeliveryHandler();
+    }
 }

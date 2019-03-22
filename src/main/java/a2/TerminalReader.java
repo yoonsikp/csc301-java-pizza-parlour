@@ -1,5 +1,6 @@
 package a2;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,17 @@ public class TerminalReader {
         this.is = is;
     }
 
+    private void printOptions(List<String> allOptions) {
+        for (int i = 0; i < allOptions.size(); i++){
+            StringBuilder tempString = new StringBuilder("[");
+            tempString.append(Integer.toString(i));
+            tempString.append("] ");
+            tempString.append(allOptions.get(i).substring(0, 1).toUpperCase() + allOptions.get(i).substring(1));
+            System.out.println(tempString);
+        }
+    }
+
+
     public void startReading() {
         // Input
         String genInput;
@@ -28,45 +40,64 @@ public class TerminalReader {
         Food currFood = null;
 
         Menu currMenu = PizzaParlour.getMenu();
-        System.out.println("Welcome to 301 Pizza!:  ");
+        System.out.println("Welcome to 301 Pizza Parlour!:  ");
+        System.out.println("Type 'help' at any time to get commands");
+        System.out.printf("/$ ");
         genInput = in.nextLine();
 
         while(!genInput.equals("exit")){
 
             String[] command = genInput.split(" ");
-            if (command[0].equals("view_menu") && command.length == 1) {
+            if (command[0].equals("menu") && command.length == 1) {
                 System.out.println("this is the menu");
-                continue;
-            }
-
-            if (command[0].equals("view_item") && command.length == 2) {
+            } else if (command[0].equals("menuitem") && command.length == 2) {
                 System.out.println("this is the menu item");
-                continue;
-            }
+            } else if (currOrder == null && currFood == null) {
+                if (command[0].equals("help")) {
+                    System.out.println("\tmenu                 \tPrints out the Current Menu");
+                    System.out.println("\tmenuitem [item name] \tPrints out the Price of a Menu Item");
+                    System.out.println("\taddord               \tAdds an Order to the Pizza Parlour");
+                    System.out.println("\tselord [order id]    \tSelects an Order by ID in the Pizza Parlour");
+                    System.out.println("\tlsord                \tLists all Current Orders and their IDs");
+                }
+                else if (command[0].equals("addord") && command.length == 1) {
+                    System.out.println("Order Created: Try 'addfood pizza' or 'addfood drink'");
+                currOrder = currOrderHandler.createOrder();
+                }
+                else if (command[0].equals("selord") && command.length == 2) {
+                    System.out.println("Order Selected: now do something with it");
+                currOrder = currOrderHandler.getOrder(command[1]);
+                }
+                else if (command[0].equals("lsord") && command.length == 1) {
+                    System.out.println("we are printing all the orders");
+                    List <Order> allOrders = currOrderHandler.getAllOrders();
+                    for (Order order : allOrders) {
+                        System.out.println(order.toString());
+                    }
+                } else {
+                    System.out.println("Invalid Command");
+                }
 
-            if (currOrder == null && currFood == null) {
-                if (command[0].equals("create_o") && command.length == 1) {
-                    System.out.println("we created an order, now type create_food");
-//                currOrder = currOrderHandler.createOrder();
-                }
-                else if (command[0].equals("select_o") && command.length == 2) {
-                    System.out.println("we selected an order, now do something with it");
-//                currOrder = currOrderHandler.getOrder(command[1]);
-                }
-                else if (command[0].equals("list_o") && command.length == 1) {
-//                    System.out.println("we are printing all the orders");
-//                List <Order> allOrders = currOrderHandler.getAllOrders();
-//                    for (Order order : allOrders) {
-//                        System.out.println(order.toString());
-//                    }
-                }
             }
-            if (currOrder != null && currFood == null) {
-                if (command[0].equals("cancel_o") && command.length == 1) {
+            else if (currOrder != null && currFood == null) {
+                if (command[0].equals("help")) {
+                    System.out.println("\tmenu                 \tPrints out the Current Menu");
+                    System.out.println("\tmenuitem [item name] \tPrints out the Price of a Menu Item");
+                    System.out.println("\trmord                \tCancels the Currently Selected Order");
+                    System.out.println("\tdeliver              \tRequest for Delivery Service");
+                    System.out.println("\trmdeliver            \tCancel Delivery Service");
+                    System.out.println("\tprintord             \tDetails about the Currently Selected Order");
+                    System.out.println("\taddfood [pizza, drink]\tAdd a Dish to the Currently Selected Order");
+                    System.out.println("\tselfood              \tSelect a Dish in the Currently Selected Order");
+                    System.out.println("\tback                 \tDeselect Currently Selected Order");
+                } else if (command[0].equals("back") && command.length == 1) {
+                    currOrder = null;
+                }
+                else if (command[0].equals("rmord") && command.length == 1) {
                     System.out.println("we canceled the order, you can now create other orders");
                     currOrderHandler.removeOrder(currOrder);
                 }
-                else if (command[0].equals("create_deliv") && command.length == 1) {
+                else if (command[0].equals("deliver") && command.length == 1) {
                     System.out.println("Select you delivery type by number");
 
                     List<String> delivMethods = currDeliveryHandler.getDeliveryMethods();
@@ -86,10 +117,10 @@ public class TerminalReader {
                     Delivery delivery = currDeliveryHandler.createDelivery(currOrder, address, delivTypeIndex);
                     currOrder.setDelivery(delivery);
                 }
-                else if (command[0].equals("cancel_deliv") && command.length == 1) {
+                else if (command[0].equals("rmdeliver") && command.length == 1) {
                     currDeliveryHandler.removeDelivery(currOrder);
                 }
-                else if (command[0].equals("print_order") && command.length == 1) {
+                else if (command[0].equals("printord") && command.length == 1) {
                     List<Food> foods = currOrder.getFoods();
                     for (int i = 0; i < foods.size(); i++){
                         StringBuilder tempString = new StringBuilder("[");
@@ -108,79 +139,107 @@ public class TerminalReader {
                     System.out.printf("Final Price: ");
                     System.out.println(currOrder.getPrice());
                 }
-                else if (command[0].equals("create_food") && command.length == 2) {
+                else if (command[0].equals("addfood") && command.length == 2) {
 
-                    PizzaFactory
-                    if (command[1].equals("pizza")){
-                        int pizzaType;
-                        int pizzaSize;
-                        List<Integer> pizzaToppings = new ArrayList<Integer> ();
+                    if (command[1].toLowerCase().equals("pizza")){
+                        String pizzaType;
+                        String pizzaSize;
 
-                        System.out.println("Choose Pizza Type by number");
+                        System.out.println("Choose Pizza Type:");
                         List<String> pizzaTypes = currMenu.getPizzaTypes();
-                        for (int i = 0; i < pizzaTypes.size(); i++){
-                            StringBuilder tempString = new StringBuilder("[");
-                            tempString.append(Integer.toString(i));
-                            tempString.append("] ");
-                            tempString.append(pizzaTypes.get(i));
-                            System.out.println(tempString);
+                        printOptions(pizzaTypes);
+
+                        pizzaType = pizzaTypes.get(Integer.parseInt(in.nextLine()));
+
+                        System.out.println("Choose Pizza Size:");
+                        List<String> pizzaSizes = currMenu.getPizzaSizes(pizzaType);
+                        printOptions(pizzaSizes);
+
+                        pizzaSize = pizzaSizes.get(Integer.parseInt(in.nextLine()));
+
+                        PizzaFactory pf = new PizzaFactory();
+                        Pizza currPizza = pf.makeFood();
+                        currPizza.setType(pizzaSize);
+                        currPizza.setSize(pizzaSize);
+
+                        List<String> pizzaToppings = currMenu.getPizzaToppings();
+                        printOptions(pizzaToppings);
+                        if (pizzaToppings.size() > 0) {
+                            System.out.println("Choose Toppings Separated by Commas (minus sign to remove a topping):");
+                            String currLine = in.nextLine();
+                            String[] splitToppings = currLine.split(",");
+                            for (String topping : splitToppings){
+                                int index;
+                                try {
+                                    index = Integer.parseInt(topping.trim());
+                                    if (topping.trim().equals("-0")) {
+                                        currPizza.removeTopping(pizzaToppings.get(0));
+                                        System.out.println("Pizza fasdfasdf Added to Order");
+                                    } else if (index < 0 && (-index < pizzaToppings.size()) ){
+                                        currPizza.removeTopping(pizzaToppings.get(-index));
+                                    } else if ( index < pizzaToppings.size() ){
+                                        currPizza.addTopping(pizzaToppings.get(index));
+                                    } else {
+                                        System.out.printf("Skipping unknown topping:");
+                                        System.out.println(topping);
+                                    }
+                                } catch (NumberFormatException e){
+                                    System.out.printf("Skipping unknown topping:");
+                                    System.out.println(topping);
+                                }
+
+                            }
+
+
+
                         }
-                        pizzaType = Integer.parseInt(in.nextLine());
-
-                        System.out.println("Choose Pizza Size by number");
-                        List<String> pizzaSizes = currMenu.getPizzaSizes();
-                        for (int i = 0; i < pizzaSizes.size(); i++){
-                            StringBuilder tempString = new StringBuilder("[");
-                            tempString.append(Integer.toString(i));
-                            tempString.append("] ");
-                            tempString.append(pizzaSizes.get(i));
-                            System.out.println(tempString);
-                        }
-                        pizzaSize = Integer.parseInt(in.nextLine());
-
-                        System.out.println("Choose Toppings by comma separated numbers, use a dash to get rid of a topping");
-                        List<String> allPizzaToppings = currMenu.getPizzaToppings();
-                        for (int i = 0; i < allPizzaToppings.size(); i++){
-                            StringBuilder tempString = new StringBuilder("[");
-                            tempString.append(Integer.toString(i));
-                            tempString.append("] ");
-                            tempString.append(allPizzaToppings.get(i));
-                            System.out.println(tempString);
-                        }
-                        String currLine = in.nextLine();
-
-                    } else if (command[1].equals("drink")) {
-
+                        currFood = currPizza;
+                        currOrder.addFood(currFood);
+                        System.out.println("Pizza Successfully Added to Order");
+                    } else if (command[1].toLowerCase().equals("drink")) {
+                        System.out.println("Choose a Drink:");
+                        List<String> drinks = currMenu.getDrinks();
+                        printOptions(drinks);
+                        String drink = drinks.get(Integer.parseInt(in.nextLine()));
+                        DrinkFactory df = new DrinkFactory();
+                        Drink currDrink = df.makeFood();
+                        currDrink.setType(drink);
+                        currFood = currDrink;
+                        currOrder.addFood(currFood);
+                        System.out.println("Drink Successfully Added to Order");
+                    } else {
+                        System.out.println("Invalid Command");
                     }
 
 
+                } else {
+                    System.out.println("Invalid Command");
                 }
             }
-
-
-            if (genInput.equals("help")) {
-                System.out.println("view_menu");
-                System.out.println("view_item");
-                System.out.println("create_o");
-                System.out.println("select_o");
-                System.out.println("list_o");
+            else if (currOrder != null && currFood != null) {
+                if (command[0].equals("help")) {
+                    System.out.println("change_food");
+                    System.out.println("delete_food");
+                    System.out.println("list_toppings");
+                    System.out.println("back");
+                } else if (command[0].equals("back") && command.length == 1) {
+                    currFood = null;
+                } else {
+                    System.out.println("Invalid Command");
+                }
             }
-
-            if (genInput.equals("help_in_order")) {
-                System.out.println("cancel_o");
-                System.out.println("create_deliv");
-                System.out.println("cancel_deliv");
-                System.out.println("print_order");
-                System.out.println("create_food");
-                System.out.println("select_food");
+            StringBuilder tempSB = new StringBuilder("/");
+            if (currOrder != null) {
+                tempSB.append("Order_");
+                tempSB.append(currOrder.getID());
             }
-
-            if (genInput.equals("help_in_order_food")) {
-                System.out.println("change_food");
-                System.out.println("delete_food");
-                System.out.println("list_toppings");
+            if (currFood != null) {
+                tempSB.append("/");
+                tempSB.append("Food_");
+                tempSB.append(currFood.toString());
             }
-
+            tempSB.append("$ ");
+            System.out.printf(tempSB.toString());
             genInput = in.nextLine();
 
         }

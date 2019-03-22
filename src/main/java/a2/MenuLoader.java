@@ -8,9 +8,8 @@ import java.io.FileReader;
 import java.util.*;
 
 public class MenuLoader {
-    public static void getPopulatedMenu(String filename){
+    public static Menu getPopulatedMenu(String filename){
         Menu myMenu = new Menu();
-        Gson gson = new Gson();
         try {
             JsonParser parser = new JsonParser();
             JsonElement jsonTree = parser.parse(new FileReader(filename));
@@ -55,6 +54,6 @@ public class MenuLoader {
             e.printStackTrace();
         }
 
-
+        return myMenu;
     }
 }
