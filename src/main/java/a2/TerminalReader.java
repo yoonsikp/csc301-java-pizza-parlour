@@ -64,18 +64,18 @@ public class TerminalReader {
             if (currOrder != null && currFood == null) {
                 if (command[0].equals("cancel_o") && command.length == 1) {
                     System.out.println("we canceled the order, you can now create other orders");
-//                currOrderHandler.removeOrder(currOrder);
+                    currOrderHandler.removeOrder(currOrder);
                 }
                 else if (command[0].equals("create_deliv") && command.length == 1) {
                     System.out.println("Select you delivery type by number");
 
-//                  List<String> delivMethods = currDeliveryHandler.getDeliveryMethods();
+                    List<String> delivMethods = currDeliveryHandler.getDeliveryMethods();
 
-                    for (int i = 0; i < delivMethods.length; i++){
+                    for (int i = 0; i < delivMethods.size(); i++){
                         StringBuilder tempString = new StringBuilder("[");
                         tempString.append(Integer.toString(i));
                         tempString.append("] ");
-                        tempString.append(delivMethods[i]);
+                        tempString.append(delivMethods.get(i));
                         System.out.println(tempString);
                     }
 
@@ -83,22 +83,22 @@ public class TerminalReader {
                     System.out.println("Please tell us your address");
                     String address = in.nextLine();
                     System.out.println("we will deliver to the place for you!");
-//                Delivery delivery = currDeliveryHandler.createDelivery(currOrder, address, delivTypeIndex);
-                    //currOrder.setDelivery(delivery);
+                    Delivery delivery = currDeliveryHandler.createDelivery(currOrder, address, delivTypeIndex);
+                    currOrder.setDelivery(delivery);
                 }
                 else if (command[0].equals("cancel_deliv") && command.length == 1) {
-                    //currDeliveryHandler.removeDelivery(currOrder);
+                    currDeliveryHandler.removeDelivery(currOrder);
                 }
                 else if (command[0].equals("print_order") && command.length == 1) {
-                    //List<Food> foods = currOrder.getFoods();
-                    for (int i = 0; i < foods.length; i++){
+                    List<Food> foods = currOrder.getFoods();
+                    for (int i = 0; i < foods.size(); i++){
                         StringBuilder tempString = new StringBuilder("[");
                         tempString.append(Integer.toString(i));
                         tempString.append("] ");
-                        tempString.append(foods[i].toString());
+                        tempString.append(foods.get(i).toString());
                         System.out.println(tempString);
                     }
-                    //Delivery deliv = currOrder.getDelivery();
+                    Delivery deliv = currOrder.getDelivery();
                     if (deliv == null) {
                         System.out.println("Delivery Method: Pickup");
                     } else {
@@ -109,29 +109,46 @@ public class TerminalReader {
                     System.out.println(currOrder.getPrice());
                 }
                 else if (command[0].equals("create_food") && command.length == 2) {
-                    int pizzaType;
-                    int pizzaSize;
-                    List<Integer> pizzaToppings = new ArrayList<Integer> ();
-                    if (command[1].equals("pizza")){
-                        System.out.println("Choose Pizza Type by number");
-                        //List<String> ptypes = currMenu.getPizzaTypes();
-                        for (int i = 0; i < ptypes.length; i++){
-                            StringBuilder tempString = new StringBuilder("[");
-                            tempString.append(Integer.toString(i));
-                            tempString.append("] ");
-                            tempString.append(ptypes[i].toString());
-                            System.out.println(tempString);
-                        }
 
-                        System.out.println("Choose Toppings by comma separated numbers, multiple times for multiple toppings");
-                        //List<String> ptypes = currMenu.getPizzaTypes();
-                        for (int i = 0; i < ptypes.length; i++){
+                    PizzaFactory
+                    if (command[1].equals("pizza")){
+                        int pizzaType;
+                        int pizzaSize;
+                        List<Integer> pizzaToppings = new ArrayList<Integer> ();
+
+                        System.out.println("Choose Pizza Type by number");
+                        List<String> pizzaTypes = currMenu.getPizzaTypes();
+                        for (int i = 0; i < pizzaTypes.size(); i++){
                             StringBuilder tempString = new StringBuilder("[");
                             tempString.append(Integer.toString(i));
                             tempString.append("] ");
-                            tempString.append(ptypes[i].toString());
+                            tempString.append(pizzaTypes.get(i));
                             System.out.println(tempString);
                         }
+                        pizzaType = Integer.parseInt(in.nextLine());
+
+                        System.out.println("Choose Pizza Size by number");
+                        List<String> pizzaSizes = currMenu.getPizzaSizes();
+                        for (int i = 0; i < pizzaSizes.size(); i++){
+                            StringBuilder tempString = new StringBuilder("[");
+                            tempString.append(Integer.toString(i));
+                            tempString.append("] ");
+                            tempString.append(pizzaSizes.get(i));
+                            System.out.println(tempString);
+                        }
+                        pizzaSize = Integer.parseInt(in.nextLine());
+
+                        System.out.println("Choose Toppings by comma separated numbers, use a dash to get rid of a topping");
+                        List<String> allPizzaToppings = currMenu.getPizzaToppings();
+                        for (int i = 0; i < allPizzaToppings.size(); i++){
+                            StringBuilder tempString = new StringBuilder("[");
+                            tempString.append(Integer.toString(i));
+                            tempString.append("] ");
+                            tempString.append(allPizzaToppings.get(i));
+                            System.out.println(tempString);
+                        }
+                        String currLine = in.nextLine();
+
                     } else if (command[1].equals("drink")) {
 
                     }
