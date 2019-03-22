@@ -21,4 +21,7 @@ class Pizza extends Food {
     public String getToppings() {
         return toppings;
     }
+    public String toString() {
+        return "I'm a pizza";
+    }
 }

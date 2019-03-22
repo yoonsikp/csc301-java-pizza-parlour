@@ -29,7 +29,9 @@ public class OrderHandler {
         }
 
     }
-
+    public void setNextOrderID(int nextOrderID) {
+        this.nextOrderID = nextOrderID;
+    }
     public List<Order> getAllOrders() {
         return new ArrayList<Order>(allOrdersMap.values());
     }

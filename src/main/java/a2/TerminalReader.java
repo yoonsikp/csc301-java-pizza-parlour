@@ -66,10 +66,12 @@ public class TerminalReader {
             return;
         }
         else if (command[0].equals("selorder") && command.length == 2) {
-            System.out.println("Order Selected:");
+
             this.currentOrder = this.orderHandler.getOrder(command[1]);
             if (currentOrder == null){
                 System.out.println("Order ID not found");
+            } else {
+                System.out.println("Order Selected:");
             }
             return;
         } else if (command[0].equals("selorder") && command.length == 1) {
@@ -214,6 +216,7 @@ public class TerminalReader {
                     tempString.append(allFoods.get(i).toString());
                     System.out.println(tempString);
                 }
+                //TODO add more checks on line
                 this.currentFood = allFoods.get(Integer.parseInt(this.streamScanner.nextLine()));
             } else {
                 System.out.println("No Dishes in Order");
@@ -359,6 +362,8 @@ public class TerminalReader {
         System.out.println("Welcome to 301 Pizza Parlour");
         System.out.println("Type '?' at any time for help. End program by typing 'exit'.");
         System.out.printf("/$ ");
+
+
         genInput = this.streamScanner.nextLine();
 
         while(!genInput.equals("exit")){
