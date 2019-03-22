@@ -3,6 +3,8 @@ package a2;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 public class TerminalReader {
     private java.io.InputStream inputStream;
     private Scanner streamScanner;
@@ -17,13 +19,22 @@ public class TerminalReader {
     }
 
     public TerminalReader(java.io.InputStream inputStream){
+        this(inputStream, PizzaParlour.getMenu());
+    }
+
+    public TerminalReader(java.io.InputStream inputStream, Menu menu){
+        this(inputStream, menu, PizzaParlour.getOrderHandler(), PizzaParlour.getDeliveryHandler());
+    }
+
+    public TerminalReader(java.io.InputStream inputStream, Menu menu, OrderHandler orderHandler,
+                          DeliveryHandler deliveryHandler){
         this.inputStream = inputStream;
         this.streamScanner = new Scanner(this.inputStream);
-        this.orderHandler = PizzaParlour.getOrderHandler();
-        this.deliveryHandler = PizzaParlour.getDeliveryHandler();
+        this.orderHandler = orderHandler;
+        this.deliveryHandler = deliveryHandler;
         this.currentOrder = null;
         this.currentFood = null;
-        this.currentMenu = PizzaParlour.getMenu();
+        this.currentMenu = menu;
     }
 
     private void printOptions(List<String> allOptions) {
@@ -329,8 +340,9 @@ public class TerminalReader {
                     System.out.println("\tmenu              \tPrint out the Current Menu");
                     System.out.println("\tmenuitem ITEM     \tPrint out the Price of a Menu Item");
                     System.out.println("\tchdish            \tModify the Current Dish");
+                    System.out.println("\tprintdish         \tPrint Info about the Current Dish");
                     System.out.println("\trmdish            \tRemove the Current Dish from the Order");
-                    System.out.println("\t..");
+                    System.out.println("\t..                \tDeselect Currently Selected Dish");
                 } else if (command[0].equals("..") && command.length == 1) {
                     this.currentFood = null;
                 } else if (command[0].equals("rmdish") && command.length == 1) {
