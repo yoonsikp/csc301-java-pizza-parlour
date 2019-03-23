@@ -94,7 +94,7 @@ public class TerminalReaderTest {
     }
 
     @Test
-    public void checkOrderNumbering() {
+    public void checkOrderHandling() {
         InputStream stream = new ByteArrayInputStream("neworder\n..\nneworder\nexit\n".getBytes(StandardCharsets.UTF_8));
         TerminalReader testTerm = new TerminalReader(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
