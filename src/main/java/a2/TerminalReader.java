@@ -168,6 +168,7 @@ public class TerminalReader {
                 DrinkFactory df = new DrinkFactory();
                 Drink currDrink = df.makeFood();
                 currDrink.setType(drink);
+                currDrink.setPrice(this.currentMenu.getDrinkPrice(drink));
                 this.currentOrder.addFood(currDrink);
                 System.out.println("Drink Successfully Added to Order");
                 return;
@@ -196,6 +197,7 @@ public class TerminalReader {
                 Pizza currPizza = pf.makeFood();
                 currPizza.setType(pizzaType);
                 currPizza.setSize(pizzaSize);
+                currPizza.setPrice(this.currentMenu.getPizzaPrice(pizzaType, pizzaSize));
                 List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
                 if (pizzaToppings.size() > 0) {
                     System.out.println("Choose Toppings Separated by Commas (minus sign to remove a topping):");
@@ -342,7 +344,7 @@ public class TerminalReader {
         System.out.println("List of Dishes");
         List<Food> foods = this.currentOrder.getFoods();
         for (Food food: foods){
-            System.out.println(food.toString());
+            System.out.println("- " + food.toString());
         }
         Delivery deliv = this.currentOrder.getDelivery();
         if (deliv == null) {

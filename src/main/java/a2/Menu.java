@@ -27,6 +27,12 @@ public class Menu {
         return new ArrayList<String>(drinkSet.keySet());
     }
 
+    public Float getPizzaPrice(String pizzaType, String pizzaSize){
+        return this.pizzaSet.get(pizzaType).get(pizzaSize);
+    }
+
+    public Float getDrinkPrice(String currDrink){ return this.drinkSet.get(currDrink); }
+
     public void setToppings(List<String> toppingList){
         this.toppingList = toppingList;
     }
@@ -38,4 +44,5 @@ public class Menu {
     public void setDrinks(HashMap<String, Float> drinkSet){
         this.drinkSet = drinkSet;
     }
+
 }
