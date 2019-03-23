@@ -30,8 +30,8 @@ public class Order {
         return this.delivery;
     }
 
-    public String getPrice() {
-        return this.totalPrice.toString();
+    public float getPrice() {
+        return this.totalPrice;
     }
 
     public void addFood(Food food) {
