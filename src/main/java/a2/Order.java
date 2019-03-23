@@ -7,6 +7,7 @@ public class Order {
     String orderID;
     List<Food> foods;
     Float totalPrice;
+    Delivery delivery;
 
     /**
      * Constructor for Order, instantiate a new Order with with orderID as ID.
@@ -26,7 +27,7 @@ public class Order {
     }
 
     public Delivery getDelivery() {
-        return new Delivery();
+        return this.delivery;
     }
 
     public String getPrice() {
