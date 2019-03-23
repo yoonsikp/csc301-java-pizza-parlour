@@ -100,7 +100,7 @@ public class TerminalReaderTest {
         testTerm.startReading();
         String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
         assertEquals("/Order_0$ ", firstOrderLine.substring(0, 10));
-        String secondOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length ];
+        String secondOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 1];
         assertEquals("/Order_1$ ", secondOrderLine);
     }
 
