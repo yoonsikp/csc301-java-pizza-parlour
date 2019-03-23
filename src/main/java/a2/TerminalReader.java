@@ -372,9 +372,9 @@ public class TerminalReader {
 
             String[] command = genInput.split(" ");
             if (command[0].equals("menu") && command.length == 1) {
-                System.out.println("this is the menu");
+                System.out.println(this.currentMenu.toString());
             } else if (command[0].equals("menuitem") && command.length == 2) {
-                System.out.println("this is the menu item");
+                System.out.println(this.currentMenu.getMenuItem(command[1]));
             } else if (this.currentOrder == null && this.currentFood == null) {
                 if (command[0].equals("?") || command[0].equals("help")) {
                     System.out.println("\tmenu               \tPrint out the Current Menu");

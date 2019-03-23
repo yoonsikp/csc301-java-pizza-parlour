@@ -34,7 +34,7 @@ class Pizza extends Food {
         }
         pizzaString.append("size ");
         pizzaString.append(this.size);
-        pizzaString.append(" (");
+        pizzaString.append(" ($");
         pizzaString.append(this.getPrice().toString());
         pizzaString.append(")");
 

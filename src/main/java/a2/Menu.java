@@ -33,6 +33,31 @@ public class Menu {
 
     public Float getDrinkPrice(String currDrink){ return this.drinkSet.get(currDrink); }
 
+    public String getMenuItem(String menuItem){
+        StringBuilder menuItemString = new StringBuilder();
+        if(this.pizzaSet.containsKey(menuItem)){
+            String pizzaString = menuItem + ": ";
+            menuItemString.append(pizzaString);
+            menuItemString.append(getPizzaSizesAsString(menuItem));
+
+        }else if(this.drinkSet.containsKey(menuItem)){
+            String drinkString = menuItem + ": ($" + this.drinkSet.get(menuItem).toString() + ")\n";
+            menuItemString.append(drinkString);
+        }
+        return menuItemString.toString();
+    }
+
+    public String getPizzaSizesAsString(String type){
+        StringBuilder menuString = new StringBuilder();
+        for(String size : this.pizzaSet.get(type).keySet()){
+            menuString.append(size);
+            menuString.append(" ($");
+            menuString.append(this.pizzaSet.get(type).get(size).toString());
+            menuString.append(") ");
+        }
+        return menuString.toString();
+    }
+
     public void setToppings(List<String> toppingList){
         this.toppingList = toppingList;
     }
@@ -45,4 +70,28 @@ public class Menu {
         this.drinkSet = drinkSet;
     }
 
+    public void addNewPizzaToMenu(String type){
+
+    }
+
+    public String toString() {
+        StringBuilder menuString = new StringBuilder();
+        menuString.append("Pizzas:\n");
+        for(String type: this.pizzaSet.keySet()){
+            String pizzaString = "- " + type + " ";
+            menuString.append(pizzaString);
+            menuString.append(" ");
+            menuString.append(getPizzaSizesAsString(type));
+            menuString.append("\n");
+        }
+        menuString.append("Drinks:\n");
+        for(String drink : this.drinkSet.keySet()){
+            String drinkString = "- " + drink + " ($";
+            menuString.append(drinkString);
+            menuString.append(this.drinkSet.get(drink).toString());
+            menuString.append(")\n");
+        }
+
+        return menuString.toString();
+    }
 }

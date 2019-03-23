@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryHandler {
+    private ArrayList<String> deliveryMethods;
+
     public List<String> getDeliveryMethods() {
-        return new ArrayList<String>();
+        return this.deliveryMethods;
+    }
+
+    public void setDeliveryMethods(){
+
     }
 
     public Delivery createDelivery(Order currOrder, String address, int delivTypeIndex) {
