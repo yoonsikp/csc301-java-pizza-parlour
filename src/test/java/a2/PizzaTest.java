@@ -23,7 +23,7 @@ public class PizzaTest {
 
     @Test
     public void defaultPizzaSize() {
-        assertEquals(getPeppPizza().getSize(), "M");
+        assertEquals(getPeppPizza().getSize(), "m");
     }
 
     @Test

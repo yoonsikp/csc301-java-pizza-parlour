@@ -12,7 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TerminalInterfaceTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -104,6 +106,184 @@ public class TerminalInterfaceTest {
         assertEquals("/Order_1$ ", secondOrderLine);
     }
 
+    @Test
+    public void orderSelection() {
+        InputStream stream = new ByteArrayInputStream("neworder\n..\nneworder\n..\nselorder 0\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 1];
+        assertEquals("/Order_0$ ", firstOrderLine.substring(0, 10));
+    }
+
+    @Test
+    public void orderSelection2() {
+        InputStream stream = new ByteArrayInputStream("neworder\n..\nneworder\n..\nselorder\n1\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 1];
+        assertEquals("/Order_1$ ", firstOrderLine.substring(0, 10));
+    }
+
+    @Test
+    public void orderSelection3() {
+        InputStream stream = new ByteArrayInputStream("neworder\n..\nneworder\n..\nselorder 1\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 1];
+        assertEquals("/Order_1$ ", firstOrderLine.substring(0, 10));
+    }
+    @Test
+    public void createDrink() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertEquals("Drink Successfully Added to Order", firstOrderLine);
+
+    }
+
+    @Test
+    public void noOrdersListOrders() {
+        InputStream stream = new ByteArrayInputStream("lsorder\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertTrue(firstOrderLine.contains("No Current Orders"));
+    }
+    @Test
+    public void createDrinkListDishes() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\nlsdish\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertTrue(firstOrderLine.contains("Drink"));
+        // for drink type
+        assertTrue(firstOrderLine.contains("COKE"));
+    }
+
+    @Test
+    public void createDrinkListOrders() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\n..\nlsorder\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertTrue(firstOrderLine.contains("Drink"));
+        // for drink type
+        assertTrue(firstOrderLine.contains("COKE"));
+    }
+
+    @Test
+    public void createDrinkCheckDrink() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\nseldish\n0\nprintdish\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertTrue(firstOrderLine.contains("Drink"));
+        // for drink type
+        assertTrue(firstOrderLine.contains("COKE"));
+    }
+
+
+    @Test
+    public void createDrinkChangeDrinkEmptyInput() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\nseldish\n0\nchdish\n\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertEquals("Drink Has Been Modified", firstOrderLine);
+
+    }
+
+    @Test
+    public void changeDishInvalidInput() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\nseldish\n0\nchdish\n-kjjnkdv0\nprintdish\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 3];
+        assertEquals("Invalid Option", firstOrderLine);
+    }
+    @Test
+    public void createPizza() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewpizza\n0\n0\n0,0\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertEquals("Pizza Successfully Added to Order", firstOrderLine);
+
+    }
+
+    @Test
+    public void acceptMalformedToppings() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewpizza\n0\n0\n0,0,-678678,gdfgdf\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 3];
+        assertTrue(firstOrderLine.contains("Skipping unknown topping"));
+        String secondOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertEquals("Pizza Successfully Added to Order", secondOrderLine);
+
+    }
+
+    @Test
+    public void createPizzaCheckPizza() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewpizza\n0\n0\n0,0\nseldish\n0\nprintdish\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertTrue(firstOrderLine.contains("ABCPIZZA"));
+        // for mushroom
+        assertTrue(firstOrderLine.contains("+2"));
+        assertTrue(firstOrderLine.contains("MUSH"));
+    }
+
+    @Test
+    public void createThenChangePizza() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewpizza\n0\n0\n0,0\nseldish\n0\nchdish\n\n\n-0,-0\nprintdish\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 3];
+        assertEquals("Pizza Has Been Modified", firstOrderLine);
+        String secondLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertFalse(secondLine.contains("+"));
+        assertFalse(secondLine.contains("MUSH"));
+        assertFalse(secondLine.contains("mush"));
+    }
+
+
+    @Test
+    public void createPizzaPrintOrder() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewpizza\n0\n0\n0,0\nprintorder\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
+        assertTrue(firstOrderLine.startsWith("Final Price: ($575"));
+    }
+
+
+    @Test
+    public void tryDeliver() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\ndeliver\n0\nstgeorge\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        assertTrue(outContent.toString().contains("Delivery Request has been Created"));
+    }
+
+    @Test
+    public void tryInvalidDeliver() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\ndeliver\ngregw\nstgeorge\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        assertTrue(outContent.toString().contains("Invalid Option"));
+        assertTrue(outContent.toString().contains("Invalid Command"));
+    }
+
+    @Test
+    public void stopDeliver() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\ndeliver\n0\nstgeorge\nrmdeliver\nprintdeliver\nexit\n".getBytes(StandardCharsets.UTF_8));
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        testTerm.startReading();
+        assertTrue(outContent.toString().contains("pick-up"));
+    }
     private Menu getEmptyMenu(){
         return new Menu();
     }
@@ -114,12 +294,13 @@ public class TerminalInterfaceTest {
         menu.setDrinks(testDrinks);
         HashMap<String, HashMap<String, Float>> testPizzas = new HashMap<>();
         HashMap<String, Float> onePrice = new HashMap<>();
-        onePrice.put("Medium", Float.parseFloat("567.0"));
+        onePrice.put("m", Float.parseFloat("567.0"));
         testPizzas.put("ABCPIZZA", onePrice);
         menu.setPizzas(testPizzas);
         ArrayList<String> toppings = new ArrayList<String>();
         toppings.add("mush");
         menu.setToppings(toppings);
+        menu.setToppingPrice((float) 4.00);
         return menu;
     }
 
