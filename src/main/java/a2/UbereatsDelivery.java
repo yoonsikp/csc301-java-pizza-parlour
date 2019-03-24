@@ -6,10 +6,15 @@ import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 import java.util.StringJoiner;
 
+/**
+ * This is the UbereatsDelivery class.
+ * The UbereatsDelivery class extends the Delivery class and inherits all of its characteristics.
+ * The UbereatsDelivery class can output its delivery details in JSON format.
+ */
 public class UbereatsDelivery extends Delivery {
-
     /**
-     * Constructor for a Foodora delivery.
+     * Constructor for a Ubereats delivery.
+     *
      * @param builder the builder that constructs the delivery
      */
     public UbereatsDelivery(Delivery.Builder builder) {
@@ -18,23 +23,24 @@ public class UbereatsDelivery extends Delivery {
 
     /**
      * Returns a JSON representation of the delivery details of a given UbereatsDelivery.
+     *
      * @param order the order whose delivery details we want
      * @return JSON representation of order's delivery
      */
-    public String outputDeliveryDetails(Order order){
+    public String outputDeliveryDetails(Order order) {
 
         HashMap<String, String> deliveryDetailsJSON = new HashMap<>();
         deliveryDetailsJSON.put("Address", order.getDelivery().getAddress());
         StringJoiner sj = new StringJoiner(" + ");
-        for(Food food : order.getFoods()){
+        for (Food food : order.getFoods()) {
             sj.add(food.toString().replaceAll(", ", " ~ "));
         }
         deliveryDetailsJSON.put("Order Details", sj.toString());
         deliveryDetailsJSON.put("Order Number", order.getOrderID());
 
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.create();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
 
-    return gson.toJson(deliveryDetailsJSON);
-  }
+        return gson.toJson(deliveryDetailsJSON);
+    }
 }
