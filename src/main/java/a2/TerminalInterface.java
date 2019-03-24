@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class TerminalReader {
+public class TerminalInterface {
     private java.io.InputStream inputStream;
     private Scanner streamScanner;
     private OrderHandler orderHandler;
@@ -13,20 +13,20 @@ public class TerminalReader {
     private Food currentFood;
     private Menu currentMenu;
 
-    public TerminalReader(){
+    public TerminalInterface(){
         this(System.in);
     }
 
-    public TerminalReader(java.io.InputStream inputStream){
+    public TerminalInterface(java.io.InputStream inputStream){
         this(inputStream, PizzaParlour.getMenu());
     }
 
-    public TerminalReader(java.io.InputStream inputStream, Menu menu){
+    public TerminalInterface(java.io.InputStream inputStream, Menu menu){
         this(inputStream, menu, PizzaParlour.getOrderHandler(), PizzaParlour.getDeliveryHandler());
     }
 
-    public TerminalReader(java.io.InputStream inputStream, Menu menu, OrderHandler orderHandler,
-                          DeliveryHandler deliveryHandler){
+    public TerminalInterface(java.io.InputStream inputStream, Menu menu, OrderHandler orderHandler,
+                             DeliveryHandler deliveryHandler){
         this.inputStream = inputStream;
         this.streamScanner = new Scanner(this.inputStream);
         this.orderHandler = orderHandler;
@@ -73,7 +73,7 @@ public class TerminalReader {
                     System.out.println("\trmorder           \tCancel the Currently Selected Order");
                     System.out.println("\tdeliver           \tRequest for Delivery Service");
                     System.out.println("\trmdeliver         \tCancel Delivery Service");
-                    System.out.println("\tdelivdetails      \tView Delivery Details");
+                    System.out.println("\tprintdeliver      \tView Delivery Details");
                     System.out.println("\tprintorder        \tDetails about the Current Order");
                     System.out.println("\tnewdish pizza     \tAdd a Pizza to the Current Order");
                     System.out.println("\tnewdish drink     \tAdd a Drink to the Current Order");
@@ -95,7 +95,7 @@ public class TerminalReader {
                     this.deliveryHandler.removeDelivery(this.currentOrder);
                     System.out.println("we have cancelled the delivery, your item will be ready for pick-up");
                 }
-                else if (command[0].equals("delivdetails") && command.length ==1){
+                else if (command[0].equals("printdeliver") && command.length ==1){
                     System.out.println(this.deliveryHandler.printDeliveryDetails(currentOrder));
                 }
                 else if (command[0].equals("printorder") && command.length == 1) {
@@ -435,12 +435,12 @@ public class TerminalReader {
         for (Food food: foods){
             System.out.println("- " + food.toString());
         }
-        Delivery deliv = this.currentOrder.getDelivery();
-        if (deliv == null) {
+        Delivery delivery = this.currentOrder.getDelivery();
+        if (delivery == null) {
             System.out.println("Delivery Method: Pickup");
         } else {
             System.out.printf("Delivery Method: ");
-            System.out.println(deliv.toString());
+            System.out.println(delivery.toString());
         }
         System.out.printf("Final Price: ");
         System.out.println(this.currentOrder.getPrice());
@@ -448,15 +448,14 @@ public class TerminalReader {
 
     private void getDeliveryDetails() {
         System.out.println("Select your delivery type by number");
-        List<String> delivMethods = this.deliveryHandler.getDeliveryMethods();
-        printOptions(delivMethods);
-        int index = getIndexResponse(delivMethods);
-        String deliverType = delivMethods.get(index);
+        List<String> deliveryMethods = this.deliveryHandler.getDeliveryMethods();
+        printOptions(deliveryMethods);
+        int index = getIndexResponse(deliveryMethods);
+        String deliverType = deliveryMethods.get(index);
         System.out.println("Please tell us your address");
         String address = this.streamScanner.nextLine();
-        System.out.println("we will deliver to the place for you!");
+        System.out.println("Delivery request has been created");
         Delivery delivery = this.deliveryHandler.createDelivery(this.currentOrder, address, deliverType);
         this.currentOrder.setDelivery(delivery);
     }
-
 }
