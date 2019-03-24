@@ -6,10 +6,11 @@ import java.util.List;
 
 public class DeliveryHandler {
     private ArrayList<String> deliveryMethods;
+    private DeliveryFactory deliveryFactory;
 
     public DeliveryHandler(){
         this.deliveryMethods = DeliveryLoader.getDeliveryMethods("delivery.json");
-
+        this.deliveryFactory = new DeliveryFactory();
     }
 
     public List<String> getDeliveryMethods() {
@@ -20,11 +21,13 @@ public class DeliveryHandler {
 
     }
 
-    public Delivery createDelivery(Order currOrder, String address, int delivTypeIndex) {
-        Delivery currDelivery = new DeliveryFactory.Builder().address(address)
-                .type(this.deliveryMethods.get(delivTypeIndex)).status().build();
-        return currDelivery;
+    public Delivery createDelivery(Order order, String address, int delivTypeIndex){
+        String delivType = this.getDeliveryMethodAt(delivTypeIndex);
+        return this.deliveryFactory.createDelivery(order, address, delivType);
+    }
 
+    public String getDeliveryMethodAt(int delivTypeIndex) {
+        return this.deliveryMethods.get(delivTypeIndex);
     }
 
     public void removeDelivery(Order currOrder) {

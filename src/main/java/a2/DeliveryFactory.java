@@ -44,4 +44,11 @@ public class DeliveryFactory {
         }
 
     }
+
+    public Delivery createDelivery(Order currOrder, String address, String delivType) {
+        Delivery currDelivery = new DeliveryFactory.Builder().address(address)
+                .type(delivType).status().build();
+        return currDelivery;
+
+    }
 }
