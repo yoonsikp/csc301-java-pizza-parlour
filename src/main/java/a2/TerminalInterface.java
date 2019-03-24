@@ -5,32 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class TerminalInterface {
+class TerminalInterface {
 
-  private java.io.InputStream inputStream;
-  private Scanner streamScanner;
-  private OrderHandler orderHandler;
-  private DeliveryHandler deliveryHandler;
+  private final Scanner streamScanner;
+  private final OrderHandler orderHandler;
+  private final DeliveryHandler deliveryHandler;
+  private final Menu currentMenu;
   private Order currentOrder;
   private Food currentFood;
-  private Menu currentMenu;
 
-  public TerminalInterface() {
+  TerminalInterface() {
     this(System.in);
   }
 
-  public TerminalInterface(java.io.InputStream inputStream) {
+  TerminalInterface(java.io.InputStream inputStream) {
     this(inputStream, PizzaParlour.getMenu());
   }
 
-  public TerminalInterface(java.io.InputStream inputStream, Menu menu) {
+  TerminalInterface(java.io.InputStream inputStream, Menu menu) {
     this(inputStream, menu, PizzaParlour.getOrderHandler(), PizzaParlour.getDeliveryHandler());
   }
 
-  public TerminalInterface(java.io.InputStream inputStream, Menu menu, OrderHandler orderHandler,
+  TerminalInterface(java.io.InputStream inputStream, Menu menu, OrderHandler orderHandler,
       DeliveryHandler deliveryHandler) {
-    this.inputStream = inputStream;
-    this.streamScanner = new Scanner(this.inputStream);
+    this.streamScanner = new Scanner(inputStream);
     this.orderHandler = orderHandler;
     this.deliveryHandler = deliveryHandler;
     this.currentOrder = null;
@@ -38,13 +36,13 @@ public class TerminalInterface {
     this.currentMenu = menu;
   }
 
-  public void startReading() {
+  void startReading() {
     // Input
     String genInput;
 
     System.out.println("Welcome to 301 Pizza Parlour");
     System.out.println("Type '?' at any time for help. End program by typing 'exit'.");
-    System.out.printf("/$ ");
+    System.out.print("/$ ");
 
     genInput = this.streamScanner.nextLine();
 
@@ -133,11 +131,12 @@ public class TerminalInterface {
       if (this.currentFood != null) {
         tempSB.append("/");
         tempSB.append("Food_");
-        tempSB.append(this.currentFood.getClass().getSimpleName() + "-" + this.currentFood.getType()
-            .toUpperCase());
+        tempSB.append(this.currentFood.getClass().getSimpleName()).append("-")
+            .append(this.currentFood.getType()
+                .toUpperCase());
       }
       tempSB.append("$ ");
-      System.out.printf(tempSB.toString());
+      System.out.print(tempSB.toString());
       genInput = this.streamScanner.nextLine();
 
     }
@@ -236,7 +235,7 @@ public class TerminalInterface {
     if (template == null) {
       System.out.println("Choose a Drink:");
     } else {
-      System.out.printf("Current Drink Type: ");
+      System.out.print("Current Drink Type: ");
       System.out.println(template.getType());
       System.out.println("Change to ... (Press Enter to Skip)");
     }
@@ -270,14 +269,13 @@ public class TerminalInterface {
       this.currentFood = currFood;
       System.out.println("Drink Has Been Modified");
     }
-    return;
   }
 
   private void addPizza(Pizza template) {
     if (template == null) {
       System.out.println("Choose Pizza Type:");
     } else {
-      System.out.printf("Current Pizza Type: ");
+      System.out.print("Current Pizza Type: ");
       System.out.println(template.getType());
       System.out.println("Change to ... (Press Enter to Skip)");
     }
@@ -305,7 +303,7 @@ public class TerminalInterface {
     if (template == null) {
       System.out.println("Choose Pizza Size:");
     } else {
-      System.out.printf("Current Pizza Size: ");
+      System.out.print("Current Pizza Size: ");
       System.out.println(template.getSize());
       System.out.println("Change to ... (Press Enter to Skip)");
     }
@@ -331,7 +329,7 @@ public class TerminalInterface {
     if (template == null) {
       System.out.println("Choose Toppings Separated by Commas (minus sign to remove a topping):");
     } else {
-      System.out.printf("Current Toppings: ");
+      System.out.print("Current Toppings: ");
       System.out.println(template.getToppings());
       System.out.println("Increase or Decrease (minus sign) Toppings ... (Press Enter to Skip)");
     }
@@ -378,7 +376,7 @@ public class TerminalInterface {
     if (delivery == null) {
       System.out.println("Delivery Method: Pickup");
     } else {
-      System.out.printf("Delivery Method: ");
+      System.out.print("Delivery Method: ");
       System.out.println(delivery.toString());
     }
 
@@ -425,9 +423,8 @@ public class TerminalInterface {
     }
   }
 
-  private int changeToppingsForPizza(HashMap<String, Integer> toppings) {
+  private void changeToppingsForPizza(HashMap<String, Integer> toppings) {
     List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
-    int numToppings = 0;
     if (pizzaToppings.size() > 0) {
       printOptions(pizzaToppings);
       String currLine = this.streamScanner.nextLine();
@@ -442,26 +439,22 @@ public class TerminalInterface {
           if (topping.trim().equals("-0")) {
             Integer initialValue = toppings.get(pizzaToppings.get(0));
             toppings.put(pizzaToppings.get(0), initialValue - 1);
-            numToppings++;
           } else if (index < 0 && (-index < pizzaToppings.size())) {
             Integer initialValue = toppings.get(pizzaToppings.get(-index));
             toppings.put(pizzaToppings.get(-index), initialValue - 1);
-            numToppings++;
           } else if (index >= 0 && index < pizzaToppings.size()) {
             Integer initialValue = toppings.get(pizzaToppings.get(index));
             toppings.put(pizzaToppings.get(index), initialValue + 1);
-            numToppings++;
           } else {
-            System.out.printf("Skipping unknown topping:");
+            System.out.print("Skipping unknown topping:");
             System.out.println(topping);
           }
         } catch (NumberFormatException e) {
-          System.out.printf("Skipping unknown topping:");
+          System.out.print("Skipping unknown topping:");
           System.out.println(topping);
         }
       }
     }
-    return numToppings;
   }
 
   private int getIndexResponse(List<String> genericList) {

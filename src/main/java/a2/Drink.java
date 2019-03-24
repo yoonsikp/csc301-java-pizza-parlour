@@ -2,6 +2,15 @@ package a2;
 
 public class Drink extends Food {
 
+  private Drink(Builder builder) {
+    super(builder);
+  }
+
+  public String toString() {
+    return this.getType().toUpperCase() + " Drink" +
+        " ($" + this.getPrice() + ")";
+  }
+
   public static class Builder extends Food.FoodBuilder<Builder> {
 
     @Override
@@ -12,15 +21,6 @@ public class Drink extends Food {
     public Food build() {
       return new Drink(this);
     }
-  }
-
-  private Drink(Builder builder) {
-    super(builder);
-  }
-
-  public String toString() {
-    return this.getType().toUpperCase() + " Drink" +
-        " ($" + this.getPrice() + ")";
   }
 
 }

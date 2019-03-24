@@ -1,15 +1,14 @@
 package a2;
 
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
-public class MenuLoader {
+class MenuLoader {
 
-  public static Menu getPopulatedMenu(String filename) {
+  static Menu getPopulatedMenu(String filename) {
     Menu myMenu = new Menu();
     try {
       JsonParser parser = new JsonParser();
@@ -20,9 +19,9 @@ public class MenuLoader {
         // Populate pizzas
         JsonObject pizzas = jsonObject.getAsJsonObject("pizzas");
         Set<Map.Entry<String, JsonElement>> pizzaEntries = pizzas.entrySet();
-        HashMap<String, HashMap<String, Float>> finalPizzaEntries = new HashMap<String, HashMap<String, Float>>();
+        HashMap<String, HashMap<String, Float>> finalPizzaEntries = new HashMap<>();
         for (Map.Entry<String, JsonElement> entry : pizzaEntries) {
-          HashMap<String, Float> newSizeEntries = new HashMap<String, Float>();
+          HashMap<String, Float> newSizeEntries = new HashMap<>();
           Set<Map.Entry<String, JsonElement>> sizeEntries = entry.getValue().getAsJsonObject()
               .entrySet();
           for (Map.Entry<String, JsonElement> sizeEntry : sizeEntries) {
@@ -36,7 +35,7 @@ public class MenuLoader {
 
         // Populate drinks
         JsonObject drinks = jsonObject.getAsJsonObject("drinks");
-        HashMap<String, Float> finalDrinkEntries = new HashMap<String, Float>();
+        HashMap<String, Float> finalDrinkEntries = new HashMap<>();
         Set<Map.Entry<String, JsonElement>> drinkEntries = drinks.entrySet();
         for (Map.Entry<String, JsonElement> dEntry : drinkEntries) {
           finalDrinkEntries
@@ -46,7 +45,7 @@ public class MenuLoader {
 
         // Populate toppings
         JsonArray toppings = jsonObject.getAsJsonArray("toppings");
-        List<String> finalToppingList = new ArrayList<String>();
+        List<String> finalToppingList = new ArrayList<>();
         for (int i = 0; i < toppings.size(); i++) {
           finalToppingList.add(toppings.get(i).getAsString().toLowerCase());
         }

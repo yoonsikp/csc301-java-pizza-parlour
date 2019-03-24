@@ -1,6 +1,6 @@
 package a2;
 
-public class PizzaParlour {
+class PizzaParlour {
 
   private static Menu menu;
   private static OrderHandler orderHandler;
@@ -18,15 +18,15 @@ public class PizzaParlour {
     }
   }
 
-  public static Menu getMenu() {
+  static Menu getMenu() {
     return menu;
   }
 
-  public static OrderHandler getOrderHandler() {
+  static OrderHandler getOrderHandler() {
     return orderHandler;
   }
 
-  public static DeliveryHandler getDeliveryHandler() {
+  static DeliveryHandler getDeliveryHandler() {
     return deliveryHandler;
   }
 }

@@ -3,7 +3,6 @@ package a2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Menu {
 
@@ -13,31 +12,35 @@ public class Menu {
   private Float toppingPrice;
 
 
-  public List<String> getPizzaTypes() {
-    return new ArrayList<String>(pizzaSet.keySet());
+  List<String> getPizzaTypes() {
+    return new ArrayList<>(pizzaSet.keySet());
   }
 
-  public List<String> getPizzaToppings() {
+  List<String> getPizzaToppings() {
     return toppingList;
   }
 
-  public List<String> getPizzaSizes(String pizzaType) {
-    return new ArrayList<String>(pizzaSet.get(pizzaType).keySet());
+  List<String> getPizzaSizes(String pizzaType) {
+    return new ArrayList<>(pizzaSet.get(pizzaType).keySet());
   }
 
-  public List<String> getDrinks() {
-    return new ArrayList<String>(drinkSet.keySet());
+  List<String> getDrinks() {
+    return new ArrayList<>(drinkSet.keySet());
   }
 
-  public Float getPizzaPrice(String pizzaType, String pizzaSize, int numExtraToppings) {
+  void setDrinks(HashMap<String, Float> drinkSet) {
+    this.drinkSet = drinkSet;
+  }
+
+  Float getPizzaPrice(String pizzaType, String pizzaSize, int numExtraToppings) {
     return this.pizzaSet.get(pizzaType).get(pizzaSize) + numExtraToppings * this.toppingPrice;
   }
 
-  public Float getDrinkPrice(String currDrink) {
+  Float getDrinkPrice(String currDrink) {
     return this.drinkSet.get(currDrink);
   }
 
-  public String getMenuItem(String menuItem) {
+  String getMenuItem(String menuItem) {
     menuItem = menuItem.toLowerCase();
     StringBuilder menuItemString = new StringBuilder();
     if (this.pizzaSet.containsKey(menuItem)) {
@@ -54,7 +57,7 @@ public class Menu {
     return menuItemString.toString().toUpperCase();
   }
 
-  public String getPizzaSizesAsString(String type) {
+  private String getPizzaSizesAsString(String type) {
     StringBuilder menuString = new StringBuilder();
     for (String size : this.pizzaSet.get(type).keySet()) {
       menuString.append(size);
@@ -65,16 +68,12 @@ public class Menu {
     return menuString.toString().toUpperCase();
   }
 
-  public void setToppings(List<String> toppingList) {
+  void setToppings(List<String> toppingList) {
     this.toppingList = toppingList;
   }
 
-  public void setPizzas(HashMap<String, HashMap<String, Float>> pizzaSet) {
+  void setPizzas(HashMap<String, HashMap<String, Float>> pizzaSet) {
     this.pizzaSet = pizzaSet;
-  }
-
-  public void setDrinks(HashMap<String, Float> drinkSet) {
-    this.drinkSet = drinkSet;
   }
 
   public String toString() {
@@ -100,7 +99,7 @@ public class Menu {
     return menuString.toString().toUpperCase();
   }
 
-  public void setToppingPrice(Float toppingPrice) {
+  void setToppingPrice(Float toppingPrice) {
     this.toppingPrice = toppingPrice;
   }
 

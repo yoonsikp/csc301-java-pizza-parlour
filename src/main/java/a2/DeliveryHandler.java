@@ -1,35 +1,33 @@
 package a2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
-public class DeliveryHandler {
+class DeliveryHandler {
 
-  private ArrayList<String> deliveryMethods = new ArrayList<>();
+  private final ArrayList<String> deliveryMethods = new ArrayList<>();
 
-  public DeliveryHandler() {
+  DeliveryHandler() {
     this.deliveryMethods.add("ubereats");
     this.deliveryMethods.add("foodora");
     this.deliveryMethods.add("in-store");
   }
 
-  public List<String> getDeliveryMethods() {
+  List<String> getDeliveryMethods() {
     return this.deliveryMethods;
   }
 
-  public Delivery createDelivery(Order currOrder, String address, String delivType) {
-    Delivery currDelivery = new Delivery.Builder().address(address)
+  Delivery createDelivery(Order currOrder, String address, String delivType) {
+    return new Delivery.Builder().address(address)
         .type(delivType).orderID(currOrder.getOrderID()).build();
-    return currDelivery;
   }
 
-  public void removeDelivery(Order currOrder) {
+  void removeDelivery(Order currOrder) {
     currOrder.setDelivery(null);
   }
 
-  public String printDeliveryDetails(Order order) {
+  String printDeliveryDetails(Order order) {
     if (order.getFoods().size() == 0) {
       return "order an item first";
     } else if (order.getDelivery() == null) {

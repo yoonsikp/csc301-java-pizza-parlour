@@ -4,39 +4,8 @@ import java.util.HashMap;
 
 class Pizza extends Food {
 
-  public static class Builder extends Food.FoodBuilder<Builder> {
-
-    @Override
-    protected Builder getThis() {
-      return this;
-    }
-
-    private String size;
-    private HashMap<String, Integer> toppings;
-
-    Builder size(String size) {
-      this.size = size;
-      return this;
-    }
-
-    Builder toppings(HashMap<String, Integer> toppings) {
-      this.toppings = toppings;
-      return this;
-    }
-
-    public Food build() {
-      if (this.size == null) {
-        this.size = "m";
-      }
-      if (this.toppings == null) {
-        this.toppings = new HashMap<>();
-      }
-      return new Pizza(this);
-    }
-  }
-
-  private String size;
-  private HashMap<String, Integer> toppings;
+  private final String size;
+  private final HashMap<String, Integer> toppings;
 
   private Pizza(Builder builder) {
     super(builder);
@@ -74,5 +43,36 @@ class Pizza extends Food {
     pizzaString.append(")");
 
     return pizzaString.toString();
+  }
+
+  public static class Builder extends Food.FoodBuilder<Builder> {
+
+    private String size;
+    private HashMap<String, Integer> toppings;
+
+    @Override
+    protected Builder getThis() {
+      return this;
+    }
+
+    Builder size(String size) {
+      this.size = size;
+      return this;
+    }
+
+    Builder toppings(HashMap<String, Integer> toppings) {
+      this.toppings = toppings;
+      return this;
+    }
+
+    public Food build() {
+      if (this.size == null) {
+        this.size = "m";
+      }
+      if (this.toppings == null) {
+        this.toppings = new HashMap<>();
+      }
+      return new Pizza(this);
+    }
   }
 }

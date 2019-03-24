@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OrderHandler {
+class OrderHandler {
 
-  private HashMap<String, Order> allOrdersMap;
+  private final HashMap<String, Order> allOrdersMap;
   private int nextOrderID;
 
   /**
    * Constructor for OrderHandler
    */
-  public OrderHandler() {
-    this.allOrdersMap = new HashMap<String, Order>();
+  OrderHandler() {
+    this.allOrdersMap = new HashMap<>();
   }
 
   /**
@@ -21,7 +21,7 @@ public class OrderHandler {
    *
    * @return newly created order
    */
-  public Order createOrder() {
+  Order createOrder() {
     String nextOrderID = getNextOrderID();
     Order newOrder = new Order(nextOrderID);
     this.allOrdersMap.put(nextOrderID, newOrder);
@@ -46,12 +46,8 @@ public class OrderHandler {
    * @param orderID the ID of the desired order
    * @return return the order with the orderID
    */
-  public Order getOrder(String orderID) {
-    if (allOrdersMap.containsKey(orderID)) {
-      return allOrdersMap.get(orderID);
-    } else {
-      return null;
-    }
+  Order getOrder(String orderID) {
+    return allOrdersMap.getOrDefault(orderID, null);
   }
 
   /**
@@ -59,8 +55,8 @@ public class OrderHandler {
    *
    * @return an ArrayList of all orders
    */
-  public List<Order> getAllOrders() {
-    return new ArrayList<Order>(allOrdersMap.values());
+  List<Order> getAllOrders() {
+    return new ArrayList<>(allOrdersMap.values());
   }
 
   /**
@@ -68,7 +64,7 @@ public class OrderHandler {
    *
    * @param currOrder the order to remove
    */
-  public void removeOrder(Order currOrder) {
+  void removeOrder(Order currOrder) {
     allOrdersMap.remove(currOrder.getOrderID());
   }
 }
