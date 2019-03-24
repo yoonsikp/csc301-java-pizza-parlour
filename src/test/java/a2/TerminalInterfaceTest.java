@@ -46,7 +46,8 @@ public class TerminalInterfaceTest {
     InputStream stream = new ByteArrayInputStream("hi\nexit\n".getBytes(StandardCharsets.UTF_8));
     TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
     testTerm.startReading();
-    assertEquals("/$ Invalid Command", outContent.toString().split("\\n")[2]);
+    int length = outContent.toString().split("\\n").length;
+    assertEquals("/$ Invalid Command", outContent.toString().split("\\n")[length - 2]);
   }
 
   @Test
@@ -54,7 +55,8 @@ public class TerminalInterfaceTest {
     InputStream stream = new ByteArrayInputStream("exit\n".getBytes(StandardCharsets.UTF_8));
     TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
     testTerm.startReading();
-    assertEquals("/$ ", outContent.toString().split("\\n")[2]);
+    int length = outContent.toString().split("\\n").length;
+    assertEquals("/$ ", outContent.toString().split("\\n")[length - 1]);
   }
 
   @Test
@@ -75,8 +77,9 @@ public class TerminalInterfaceTest {
     InputStream stream = new ByteArrayInputStream("?\nexit\n".getBytes(StandardCharsets.UTF_8));
     TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
     testTerm.startReading();
+    int length = outContent.toString().split("\\n").length;
     assertEquals("/$ \tmenu               \tPrint out the Current Menu",
-        outContent.toString().split("\\n")[2]);
+        outContent.toString().split("\\n")[length - 6]);
     assertEquals("\tlsorder            \tList all Current Orders and their IDs",
         outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2]);
   }
@@ -88,8 +91,9 @@ public class TerminalInterfaceTest {
     TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu(), new OrderHandler(),
         new DeliveryHandler());
     testTerm.startReading();
+    int length = outContent.toString().split("\\n").length;
     assertEquals("/Order_0$ \tmenu              \tPrint out the Current Menu",
-        outContent.toString().split("\\n")[3]);
+        outContent.toString().split("\\n")[length - 13]);
     assertEquals("\t..                \tDeselect Currently Selected Order",
         outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2]);
 

@@ -96,7 +96,17 @@ class TerminalInterface {
     // Input
     String genInput;
 
-    System.out.println("Welcome to 301 Pizza Parlour");
+    System.out.println("   ____ ____   ____ _____  ___  _                         \n"
+            + "  / ___/ ___| / ___|___ / / _ \\/ |                        \n"
+            + " | |   \\___ \\| |     |_ \\| | | | |                        \n"
+            + " | |___ ___) | |___ ___) | |_| | |                        \n"
+            + "  \\____|____/ \\____|____/ \\___/|_|                        \n"
+            + "  ____  _              ____            _                  \n"
+            + " |  _ \\(_)__________ _|  _ \\ __ _ _ __| | ___  _   _ _ __ \n"
+            + " | |_) | |_  /_  / _` | |_) / _` | '__| |/ _ \\| | | | '__|\n"
+            + " |  __/| |/ / / / (_| |  __/ (_| | |  | | (_) | |_| | |   \n"
+            + " |_|   |_/___/___\\__,_|_|   \\__,_|_|  |_|\\___/ \\__,_|_|   \n"
+            + "                                                          ");
     System.out.println("Type '?' at any time for help. End program by typing 'exit'.");
     System.out.print("/$ ");
 
