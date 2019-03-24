@@ -75,8 +75,8 @@ public class TerminalInterface {
                     System.out.println("\trmdeliver         \tCancel Delivery Service");
                     System.out.println("\tprintdeliver      \tView Delivery Details");
                     System.out.println("\tprintorder        \tDetails about the Current Order");
-                    System.out.println("\tnewdish pizza     \tAdd a Pizza to the Current Order");
-                    System.out.println("\tnewdish drink     \tAdd a Drink to the Current Order");
+                    System.out.println("\tnewpizza          \tAdd a Pizza to the Current Order");
+                    System.out.println("\tnewdrink          \tAdd a Drink to the Current Order");
                     System.out.println("\tseldish           \tSelect a Dish in the Current Order");
                     System.out.println("\tlsdish            \tList all Dishes in the Current Order");
                     System.out.println("\t..                \tDeselect Currently Selected Order");
@@ -84,7 +84,7 @@ public class TerminalInterface {
                     this.currentOrder = null;
                 }
                 else if (command[0].equals("rmorder") && command.length == 1) {
-                    System.out.println("we canceled the order, you can now create other orders");
+                    System.out.println("Order has been Canceled");
                     this.orderHandler.removeOrder(this.currentOrder);
                     this.currentOrder = null;
                 }
@@ -93,7 +93,7 @@ public class TerminalInterface {
                 }
                 else if (command[0].equals("rmdeliver") && command.length == 1) {
                     this.deliveryHandler.removeDelivery(this.currentOrder);
-                    System.out.println("we have cancelled the delivery, your item will be ready for pick-up");
+                    System.out.println("Delivery cancelled, order will be for pick-up");
                 }
                 else if (command[0].equals("printdeliver") && command.length ==1){
                     System.out.println(this.deliveryHandler.printDeliveryDetails(currentOrder));
@@ -150,29 +150,10 @@ public class TerminalInterface {
         this.streamScanner.close();
     }
 
-    private void printOptions(List<String> allOptions) {
-        for (int i = 0; i < allOptions.size(); i++){
-            StringBuilder tempString = new StringBuilder("[");
-            tempString.append(Integer.toString(i));
-            tempString.append("] ");
-            tempString.append(allOptions.get(i).toUpperCase());
-            System.out.println(tempString);
-        }
-    }
-    private void printAllOrders() {
-        List <Order> allOrders = this.orderHandler.getAllOrders();
 
-        for (Order order : allOrders) {
-            StringBuilder tempString = new StringBuilder("[");
-            tempString.append(order.getOrderID());
-            tempString.append("] ");
-            tempString.append(order.toString());
-            System.out.println(tempString);
-        }
-    }
     private void handleOrderState(String[] command){
         if (command[0].equals("neworder") && command.length == 1) {
-            System.out.println("Order Created: Try 'newdish pizza'");
+            System.out.println("Order Created: Try 'newpizza'");
             this.currentOrder = this.orderHandler.createOrder();
             return;
         }
@@ -212,57 +193,45 @@ public class TerminalInterface {
         }
         System.out.println("Invalid Command");
     }
-    private int changeToppingsForPizza(HashMap<String, Integer> toppings){
-        List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
-        int numToppings = 0;
-        if (pizzaToppings.size() > 0) {
-            printOptions(pizzaToppings);
-            String currLine = this.streamScanner.nextLine();
-            String[] splitToppings = currLine.split(",");
-            for (String topping : splitToppings){
-                int index;
-                if (topping.trim().equals("")) break;
-                try {
-                    index = Integer.parseInt(topping.trim());
-                    if (topping.trim().equals("-0")) {
-                        Integer initialValue = toppings.get(pizzaToppings.get(0));
-                        toppings.put(pizzaToppings.get(0), initialValue - 1);
-                        numToppings++;
-                    } else if (index < 0 && (-index < pizzaToppings.size()) ){
-                        Integer initialValue = toppings.get(pizzaToppings.get(-index));
-                        toppings.put(pizzaToppings.get(-index), initialValue - 1);
-                        numToppings++;
-                    } else if ( index < pizzaToppings.size() ){
-                        Integer initialValue = toppings.get(pizzaToppings.get(index));
-                        toppings.put(pizzaToppings.get(index), initialValue + 1);
-                        numToppings++;
-                    } else {
-                        System.out.printf("Skipping unknown topping:");
-                        System.out.println(topping);
-                    }
-                } catch (NumberFormatException e){
-                    System.out.printf("Skipping unknown topping:");
-                    System.out.println(topping);
+
+    private void handleFoodState(String[] command){
+        if (command[0].equals("newdrink") && command.length == 1) {
+                addDrink(null);
+                return;
+        } else if (command[0].equals("newpizza") && command.length == 1) {
+                addPizza(null);
+                return;
+        } else if (command[0].equals("seldish") && command.length == 1) {
+            List<Food> allFoods = this.currentOrder.getFoods();
+            if (allFoods.size() >0) {
+                System.out.println("Choose Dish from Order:");
+                for (int i = 0; i < allFoods.size(); i++){
+                    StringBuilder tempString = new StringBuilder("[");
+                    tempString.append(Integer.toString(i));
+                    tempString.append("] ");
+                    tempString.append(allFoods.get(i).toString());
+                    System.out.println(tempString);
                 }
-            }
-        }
-        return numToppings;
-    }
-    private int getIndexResponse (List<String> genericList) {
-        String response = this.streamScanner.nextLine();
-        if (response.trim().equals("")) return -2;
-        int index;
-        try {
-            index = Integer.parseInt(response.trim());
-            if (index >= 0 && (index < genericList.size()) ){
-                return (index);
+                //TODO add more checks on line
+                this.currentFood = allFoods.get(Integer.parseInt(this.streamScanner.nextLine()));
             } else {
-                return -1;
+                System.out.println("No Dishes in Order");
             }
-        } catch (NumberFormatException e){
-            return -1;
+            return;
+        } else if (command[0].equals("lsdish") && command.length == 1) {
+            List<Food> allFoods = this.currentOrder.getFoods();
+            if (allFoods.size() >0) {
+                for (Food food: allFoods){
+                    System.out.println("- " + food.toString());
+                }
+            } else {
+                System.out.println("No Dishes in Order");
+            }
+            return;
         }
+        System.out.println("Invalid Command");
     }
+
     private void addDrink(Drink template){
         if (template == null) {
             System.out.println("Choose a Drink:");
@@ -394,46 +363,7 @@ public class TerminalInterface {
             System.out.println("Pizza Has Been Modified");
         }
     }
-    private void handleFoodState(String[] command){
-        if (command[0].equals("newdish") && command.length == 2) {
-            if (command[1].toLowerCase().equals("drink")) {
-                addDrink(null);
-                return;
-            }
-            if (command[1].toLowerCase().equals("pizza")){
-                addPizza(null);
-                return;
-            }
-        } else if (command[0].equals("seldish") && command.length == 1) {
-            List<Food> allFoods = this.currentOrder.getFoods();
-            if (allFoods.size() >0) {
-                System.out.println("Choose Dish from Order:");
-                for (int i = 0; i < allFoods.size(); i++){
-                    StringBuilder tempString = new StringBuilder("[");
-                    tempString.append(Integer.toString(i));
-                    tempString.append("] ");
-                    tempString.append(allFoods.get(i).toString());
-                    System.out.println(tempString);
-                }
-                //TODO add more checks on line
-                this.currentFood = allFoods.get(Integer.parseInt(this.streamScanner.nextLine()));
-            } else {
-                System.out.println("No Dishes in Order");
-            }
-            return;
-        } else if (command[0].equals("lsdish") && command.length == 1) {
-            List<Food> allFoods = this.currentOrder.getFoods();
-            if (allFoods.size() >0) {
-                for (Food food: allFoods){
-                    System.out.println("- " + food.toString());
-                }
-            } else {
-                System.out.println("No Dishes in Order");
-            }
-            return;
-        }
-        System.out.println("Invalid Command");
-    }
+
     private void prettyPrintCurrentOrder(){
         System.out.println("List of Dishes:");
         List<Food> foods = this.currentOrder.getFoods();
@@ -447,8 +377,8 @@ public class TerminalInterface {
             System.out.printf("Delivery Method: ");
             System.out.println(delivery.toString());
         }
-        System.out.printf("Final Price: ");
-        System.out.println(this.currentOrder.getPrice());
+
+        System.out.println("Final Price: ($" + this.currentOrder.getPrice() + ")");
     }
 
     private void getDeliveryDetails() {
@@ -462,5 +392,76 @@ public class TerminalInterface {
         System.out.println("Delivery request has been created");
         Delivery delivery = this.deliveryHandler.createDelivery(this.currentOrder, address, deliverType);
         this.currentOrder.setDelivery(delivery);
+    }
+    private void printOptions(List<String> allOptions) {
+        for (int i = 0; i < allOptions.size(); i++){
+            StringBuilder tempString = new StringBuilder("[");
+            tempString.append(Integer.toString(i));
+            tempString.append("] ");
+            tempString.append(allOptions.get(i).toUpperCase());
+            System.out.println(tempString);
+        }
+    }
+    private void printAllOrders() {
+        List <Order> allOrders = this.orderHandler.getAllOrders();
+
+        for (Order order : allOrders) {
+            StringBuilder tempString = new StringBuilder("[");
+            tempString.append(order.getOrderID());
+            tempString.append("] ");
+            tempString.append(order.toString());
+            System.out.println(tempString);
+        }
+    }
+    private int changeToppingsForPizza(HashMap<String, Integer> toppings){
+        List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
+        int numToppings = 0;
+        if (pizzaToppings.size() > 0) {
+            printOptions(pizzaToppings);
+            String currLine = this.streamScanner.nextLine();
+            String[] splitToppings = currLine.split(",");
+            for (String topping : splitToppings){
+                int index;
+                if (topping.trim().equals("")) break;
+                try {
+                    index = Integer.parseInt(topping.trim());
+                    if (topping.trim().equals("-0")) {
+                        Integer initialValue = toppings.get(pizzaToppings.get(0));
+                        toppings.put(pizzaToppings.get(0), initialValue - 1);
+                        numToppings++;
+                    } else if (index < 0 && (-index < pizzaToppings.size()) ){
+                        Integer initialValue = toppings.get(pizzaToppings.get(-index));
+                        toppings.put(pizzaToppings.get(-index), initialValue - 1);
+                        numToppings++;
+                    } else if ( index < pizzaToppings.size() ){
+                        Integer initialValue = toppings.get(pizzaToppings.get(index));
+                        toppings.put(pizzaToppings.get(index), initialValue + 1);
+                        numToppings++;
+                    } else {
+                        System.out.printf("Skipping unknown topping:");
+                        System.out.println(topping);
+                    }
+                } catch (NumberFormatException e){
+                    System.out.printf("Skipping unknown topping:");
+                    System.out.println(topping);
+                }
+            }
+        }
+        return numToppings;
+    }
+    private int getIndexResponse (List<String> genericList) {
+        String response = this.streamScanner.nextLine();
+        if (response.trim().equals("")) return -2;
+        int index;
+        try {
+            index = Integer.parseInt(response.trim());
+            if (index >= 0 && (index < genericList.size()) ){
+                return (index);
+            } else {
+                return -1;
+            }
+        } catch (NumberFormatException e){
+            return -1;
+        }
     }
 }

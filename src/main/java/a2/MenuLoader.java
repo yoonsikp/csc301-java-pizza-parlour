@@ -25,9 +25,9 @@ public class MenuLoader {
                     Set<Map.Entry<String, JsonElement>> sizeEntries = entry.getValue().getAsJsonObject().entrySet();
                     for(Map.Entry<String, JsonElement> sizeEntry: sizeEntries){
 
-                        newSizeEntries.put(sizeEntry.getKey(), Float.parseFloat(sizeEntry.getValue().toString()));
+                        newSizeEntries.put(sizeEntry.getKey().toLowerCase(), Float.parseFloat(sizeEntry.getValue().toString()));
                     }
-                    finalPizzaEntries.put(entry.getKey(), newSizeEntries);
+                    finalPizzaEntries.put(entry.getKey().toLowerCase(), newSizeEntries);
                 }
                 myMenu.setPizzas(finalPizzaEntries);
 
@@ -36,7 +36,7 @@ public class MenuLoader {
                 HashMap<String, Float> finalDrinkEntries = new HashMap<String, Float>();
                 Set<Map.Entry<String, JsonElement>> drinkEntries = drinks.entrySet();
                 for(Map.Entry<String, JsonElement> dEntry: drinkEntries) {
-                    finalDrinkEntries.put(dEntry.getKey(), Float.parseFloat(dEntry.getValue().toString()));
+                    finalDrinkEntries.put(dEntry.getKey().toLowerCase(), Float.parseFloat(dEntry.getValue().toString()));
                 }
                 myMenu.setDrinks(finalDrinkEntries);
 
@@ -44,7 +44,7 @@ public class MenuLoader {
                 JsonArray toppings = jsonObject.getAsJsonArray("toppings");
                 List<String> finalToppingList = new ArrayList<String>();
                 for(int i = 0; i < toppings.size(); i++){
-                    finalToppingList.add(toppings.get(i).getAsString());
+                    finalToppingList.add(toppings.get(i).getAsString().toLowerCase());
                 }
                 myMenu.setToppings(finalToppingList);
                 // Get topping price

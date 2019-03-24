@@ -35,6 +35,7 @@ public class Menu {
     public Float getDrinkPrice(String currDrink){ return this.drinkSet.get(currDrink); }
 
     public String getMenuItem(String menuItem){
+        menuItem = menuItem.toLowerCase();
         StringBuilder menuItemString = new StringBuilder();
         if(this.pizzaSet.containsKey(menuItem)){
             String pizzaString = menuItem + ": ";
@@ -42,10 +43,12 @@ public class Menu {
             menuItemString.append(getPizzaSizesAsString(menuItem));
 
         }else if(this.drinkSet.containsKey(menuItem)){
-            String drinkString = menuItem + ": ($" + this.drinkSet.get(menuItem).toString() + ")\n";
+            String drinkString = menuItem + ": ($" + this.drinkSet.get(menuItem).toString() + ")";
             menuItemString.append(drinkString);
+        } else {
+            menuItemString.append("Item not found");
         }
-        return menuItemString.toString();
+        return menuItemString.toString().toUpperCase();
     }
 
     public String getPizzaSizesAsString(String type){
@@ -56,7 +59,7 @@ public class Menu {
             menuString.append(this.pizzaSet.get(type).get(size).toString());
             menuString.append(") ");
         }
-        return menuString.toString();
+        return menuString.toString().toUpperCase();
     }
 
     public void setToppings(List<String> toppingList){
@@ -91,7 +94,7 @@ public class Menu {
         menuString.append("Additional Toppings: ($");
         menuString.append(this.toppingPrice);
         menuString.append(")");
-        return menuString.toString();
+        return menuString.toString().toUpperCase();
     }
 
     public void setToppingPrice(Float toppingPrice) {
