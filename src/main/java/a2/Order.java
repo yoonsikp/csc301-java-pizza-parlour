@@ -19,6 +19,7 @@ public class Order {
         this.totalPrice = (float) 0;
     }
     public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
 
     }
 

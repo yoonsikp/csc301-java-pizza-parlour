@@ -413,6 +413,7 @@ public class TerminalReader {
                 }
                 else if (command[0].equals("rmdeliver") && command.length == 1) {
                     this.deliveryHandler.removeDelivery(this.currentOrder);
+                    System.out.println("we have cancelled the delivery, your item will be ready for pick-up");
                 }
                 else if (command[0].equals("printorder") && command.length == 1) {
                     prettyPrintCurrentOrder();
@@ -461,7 +462,7 @@ public class TerminalReader {
     }
 
     private void getDeliveryDetails() {
-        System.out.println("Select you delivery type by number");
+        System.out.println("Select your delivery type by number");
 
         List<String> delivMethods = this.deliveryHandler.getDeliveryMethods();
 
