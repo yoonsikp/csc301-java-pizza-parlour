@@ -6,6 +6,10 @@ Clone the repo and run:
 java -jar "a2_pair55.jar"
 ```
 
+# Clean code
+
+we used IntelliJ refactoring
+We used  GoogleStyle plugin.
 # The Project Processes
 
 We first read over the specifications of the assignment paying close attention to details. Then we made a UML diagram
