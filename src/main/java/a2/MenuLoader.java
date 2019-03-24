@@ -47,7 +47,9 @@ public class MenuLoader {
                     finalToppingList.add(toppings.get(i).getAsString());
                 }
                 myMenu.setToppings(finalToppingList);
-
+                // Get topping price
+                JsonPrimitive toppingPrice = jsonObject.getAsJsonPrimitive("additionalToppingPrice");
+                myMenu.setToppingPrice(toppingPrice.getAsFloat());
             }
 
         }catch (FileNotFoundException e) {
