@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Order {
-    String orderID;
-    List<Food> foods;
-    Float totalPrice;
-    Delivery delivery;
+    private String orderID;
+    private List<Food> foods;
+    private Float totalPrice;
+    private Delivery delivery;
 
     /**
      * Constructor for Order, instantiate a new Order with with orderID as ID.

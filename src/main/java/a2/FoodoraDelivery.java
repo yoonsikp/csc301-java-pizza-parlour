@@ -2,7 +2,7 @@ package a2;
 
 public class FoodoraDelivery extends Delivery{
 
-    public FoodoraDelivery(DeliveryFactory.Builder builder) {
+    public FoodoraDelivery(Delivery.Builder builder) {
         super(builder);
     }
 
