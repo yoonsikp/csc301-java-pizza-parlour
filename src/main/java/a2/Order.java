@@ -5,57 +5,62 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Order {
-    private String orderID;
-    private List<Food> foods;
-    private Float totalPrice;
-    private Delivery delivery;
 
-    /**
-     * Constructor for Order, instantiate a new Order with with orderID as ID.
-     * @param orderID the ID of the order to instantiate
-     */
-    public Order (String orderID){
-        this.orderID = orderID;
-        this.foods = new ArrayList<Food>();
-        this.totalPrice = (float) 0;
-    }
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
+  private String orderID;
+  private List<Food> foods;
+  private Float totalPrice;
+  private Delivery delivery;
 
-    }
+  /**
+   * Constructor for Order, instantiate a new Order with with orderID as ID.
+   *
+   * @param orderID the ID of the order to instantiate
+   */
+  public Order(String orderID) {
+    this.orderID = orderID;
+    this.foods = new ArrayList<Food>();
+    this.totalPrice = (float) 0;
+  }
 
-    public List<Food> getFoods() {
-        return this.foods;
-    }
+  public void setDelivery(Delivery delivery) {
+    this.delivery = delivery;
 
-    public Delivery getDelivery() {
-        return this.delivery;
-    }
+  }
 
-    public float getPrice() {
-        return this.totalPrice;
-    }
+  public List<Food> getFoods() {
+    return this.foods;
+  }
 
-    public void addFood(Food food) {
-        this.foods.add(food);
-        this.totalPrice += food.getPrice();
-    }
+  public Delivery getDelivery() {
+    return this.delivery;
+  }
 
-    public String getOrderID() {
-        return this.orderID;
-    }
+  public float getPrice() {
+    return this.totalPrice;
+  }
 
-    public void removeFood(Food food) {
-        this.totalPrice -= food.getPrice();
-        this.foods.remove(food);
-    }
+  public void addFood(Food food) {
+    this.foods.add(food);
+    this.totalPrice += food.getPrice();
+  }
 
-    public String toString(){
-        if (foods.size() == 0) {
-            return "No Dishes in Order";
-        }
-        StringBuilder foodString = new StringBuilder();
-        for (Food food: this.foods) foodString.append(food.toString() + ", ");
-        return foodString.append("Final Price: ($" + this.getPrice() + ")").toString();
+  public String getOrderID() {
+    return this.orderID;
+  }
+
+  public void removeFood(Food food) {
+    this.totalPrice -= food.getPrice();
+    this.foods.remove(food);
+  }
+
+  public String toString() {
+    if (foods.size() == 0) {
+      return "No Dishes in Order";
     }
+    StringBuilder foodString = new StringBuilder();
+    for (Food food : this.foods) {
+      foodString.append(food.toString() + ", ");
+    }
+    return foodString.append("Final Price: ($" + this.getPrice() + ")").toString();
+  }
 }

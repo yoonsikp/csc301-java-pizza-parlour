@@ -8,27 +8,25 @@ import java.util.StringJoiner;
 
 public class UbereatsDelivery extends Delivery {
 
-    public UbereatsDelivery(Delivery.Builder builder) {
-        super(builder);
+  public UbereatsDelivery(Delivery.Builder builder) {
+    super(builder);
+  }
+
+  public String outputDeliveryDetails(Order order) {
+    //as JSON
+
+    HashMap<String, String> deliveryDetailsJSON = new HashMap<>();
+    deliveryDetailsJSON.put("Address", order.getDelivery().getAddress());
+    StringJoiner sj = new StringJoiner(" + ");
+    for (Food food : order.getFoods()) {
+      sj.add(food.toString().replaceAll(", ", " ~ "));
     }
+    deliveryDetailsJSON.put("Order Details", sj.toString());
+    deliveryDetailsJSON.put("Order Number", order.getOrderID());
 
-    public String outputDeliveryDetails(Order order){
-        //as JSON
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
 
-
-        HashMap<String, String> deliveryDetailsJSON = new HashMap<>();
-        deliveryDetailsJSON.put("Address", order.getDelivery().getAddress());
-        StringJoiner sj = new StringJoiner(" + ");
-        for(Food food : order.getFoods()){
-            sj.add(food.toString().replaceAll(", ", " ~ "));
-        }
-        deliveryDetailsJSON.put("Order Details", sj.toString());
-        deliveryDetailsJSON.put("Order Number", order.getOrderID());
-
-
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        return gson.toJson(deliveryDetailsJSON);
-    }
+    return gson.toJson(deliveryDetailsJSON);
+  }
 }

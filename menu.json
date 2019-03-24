@@ -4,5 +4,5 @@
     "mushrooms", "onions", "pepperoni", "olives", "tomatoes", "jalapenos", "chicken", "beef"
   ],
   "drinks": {"cola": 1.50,"sprite": 1.25},
-  "additionalToppingPrice": 3
+  "toppingPrice": 3
 }
