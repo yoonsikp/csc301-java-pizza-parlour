@@ -10,10 +10,12 @@ public class HouseDelivery extends Delivery {
 
     public String outputDeliveryDetails(Order order){
         //as text
-        HashMap<String, String> deliveryDetailsJSON = new HashMap<>();
-        deliveryDetailsJSON.put("Address", order.getDelivery().getAddress());
-        deliveryDetailsJSON.put("Order Details", order.toString());
-        deliveryDetailsJSON.put("Order Number", order.getOrderID());
-        return deliveryDetailsJSON.toString();
+        StringBuilder delivDetails = new StringBuilder();
+        delivDetails.append("Address: ").append(order.getDelivery().getAddress()).append("\n");
+        delivDetails.append("Order Details: ").append("\n");
+        delivDetails.append(order.toString()).append("\n");
+        delivDetails.append("Order Number: ").append(order.getOrderID());
+
+        return delivDetails.toString();
     }
 }

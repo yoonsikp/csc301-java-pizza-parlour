@@ -29,7 +29,9 @@ public class DeliveryHandler {
     }
 
     public String printDeliveryDetails(Order order){
-        if(order.getDelivery() == null){
+        if(order.getFoods().size() == 0){
+            return "order an item first";
+        }else if(order.getDelivery() == null){
             return "order is for pick-up";
         }else {
             return order.getDelivery().outputDeliveryDetails(order);
