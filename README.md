@@ -10,6 +10,7 @@ java -jar "a2_pair55.jar"
 
 we used IntelliJ refactoring
 We used  GoogleStyle plugin.
+
 # The Project Processes
 
 We first read over the specifications of the assignment paying close attention to details. Then we made a UML diagram
@@ -48,21 +49,32 @@ We implemented a few design patterns in this project to make various aspects of 
 concise, and altogether make the project structure easier to understand, use, and augment by potential future
 developers. The following are the design patterns we have implemented.
 
-Factory Design Pattern
+Factory Design Pattern: <br />
     We used factory to implement a delivery factory, which uses a builder class to make one of a
 few different kinds of deliveries. For the time being, the delivery types we have are the HouseDelivery,
 UbereatsDelivery and FoodoraDelivery. These three delivery types are classes that extend an abstract Delivery class.
 The reason for this is that all three of these delivery types are very similar in that the only difference between
 them that merits separation into separate classes is the method of sending delivery details to the company requiring
 them. This functionality is implemented by the abstract method <outputDeliveryDetails> in the Delivery class, which
-is overridden in HouseDelivery, UbereatsDelivery and FoodoraDelivery depending on the format required.
+is overridden in HouseDelivery, UbereatsDelivery and FoodoraDelivery depending on the format required. <br />
     We used the factory design pattern to create instances of the different kinds of deliveries behind-the-scenes, so
 that other classes wouldn't need to have knowledge about how to create a Delivery and the specifics of the three
 different Delivery classes we have currently. This way, we can maintain a single responsibility principle, as different
 classes have more strongly defined single responsibilities. Additionally, by delegating responsibility only to one
 class whose sole purpose is to have knowledge about the different Delivery types as well as maintaining an abstract
 Delivery class that can be extended by specific Delivery types, it will be very easy to add more Delivery types and
-have them instantiated by the factory as well.
-
-Builder
+have them instantiated by the factory as well. <br />
+<br />
+Builder: <br />
+    We used the builder design pattern for construction of deliveries and food items. In Delivery, we created a
+static Builder class that is responsible for constructing a Delivery object and assigning a delivery type, address,
+and orderID to it. In Food, we created an abstract static Builder class that is extended in Drink and Pizza. The
+Pizza Builder is responsible for constructing a Pizza object and assigning to it a pizza type, size, list of toppings,
+and price. The Drink Builder is responsible for constructing a Drink object and assigning to it a drink type and price.
+<br />
+    We used the builder design pattern in order to break the construction of Delivery and Food objects into two parts:
+collecting arguments and creating an instance. Using this pattern allowed us to fix the issue of constructor tunneling
+by allowing the constructors to instead collect their arguments one at a time. This way, we decrease the change of
+passing incorrect parameters to Delivery and Food constructors. Additionally, this make the code much easier to
+read and understand, and improves the code quality as a whole. <br />
 
