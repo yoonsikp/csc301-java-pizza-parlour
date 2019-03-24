@@ -38,6 +38,21 @@ We implemented a few design patterns in this project to make various aspects of 
 concise, and altogether make the project structure easier to understand, use, and augment by potential future
 developers. The following are the design patterns we have implemented.
 
-Factory Design Pattern: 
+Factory Design Pattern
+    We used factory to implement a delivery factory, which uses a builder class to make one of a
+few different kinds of deliveries. For the time being, the delivery types we have are the HouseDelivery,
+UbereatsDelivery and FoodoraDelivery. These three delivery types are classes that extend an abstract Delivery class.
+The reason for this is that all three of these delivery types are very similar in that the only difference between
+them that merits separation into separate classes is the method of sending delivery details to the company requiring
+them. This functionality is implemented by the abstract method <outputDeliveryDetails> in the Delivery class, which
+is overridden in HouseDelivery, UbereatsDelivery and FoodoraDelivery depending on the format required.
+    We used the factory design pattern to create instances of the different kinds of deliveries behind-the-scenes, so
+that other classes wouldn't need to have knowledge about how to create a Delivery and the specifics of the three
+different Delivery classes we have currently. This way, we can maintain a single responsibility principle, as different
+classes have more strongly defined single responsibilities. Additionally, by delegating responsibility only to one
+class whose sole purpose is to have knowledge about the different Delivery types as well as maintaining an abstract
+Delivery class that can be extended by specific Delivery types, it will be very easy to add more Delivery types and
+have them instantiated by the factory as well.
 
-
+Builder
+    
