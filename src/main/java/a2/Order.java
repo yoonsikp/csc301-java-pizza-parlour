@@ -38,7 +38,7 @@ public class Order {
 
     public void addFood(Food food) {
         this.foods.add(food);
-        this.addToPrice(food.getPrice());
+        this.totalPrice += food.getPrice();
     }
 
     public String getOrderID() {
@@ -46,23 +46,16 @@ public class Order {
     }
 
     public void removeFood(Food food) {
+        this.totalPrice -= food.getPrice();
         this.foods.remove(food);
     }
-    public void addToPrice(Float price){ this.totalPrice += price; }
 
     public String toString(){
-
         if (foods.size() == 0) {
             return "No Dishes in Order";
         }
         StringBuilder foodString = new StringBuilder();
-
-        for (Food food: this.foods){
-            foodString.append(food.toString() + ", ");
-        }
-
-        foodString.append("Final Price: ($" + this.getPrice() + ")");
-
-        return foodString.toString();
+        for (Food food: this.foods) foodString.append(food.toString() + ", ");
+        return foodString.append("Final Price: ($" + this.getPrice() + ")").toString();
     }
 }

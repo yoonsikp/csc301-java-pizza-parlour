@@ -52,14 +52,6 @@ public class OrderHandler {
     }
 
     /**
-     * Set nextOrderID to the provided nextOrderID
-     * @param nextOrderID the order ID to set the nextOrderID to
-     */
-    public void setNextOrderID(int nextOrderID) {
-        this.nextOrderID = nextOrderID;
-    }
-
-    /**
      * Return an ArrayList of all orders in allOrdersMap
      * @return an ArrayList of all orders
      */
@@ -73,6 +65,5 @@ public class OrderHandler {
      */
     public void removeOrder(Order currOrder) {
         allOrdersMap.remove(currOrder.getOrderID());
-        //TODO check for deliveries etc.
     }
 }
