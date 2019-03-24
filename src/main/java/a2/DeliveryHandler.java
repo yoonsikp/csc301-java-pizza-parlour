@@ -64,9 +64,9 @@ class DeliveryHandler {
      */
     String printDeliveryDetails(Order order) {
         if (order.getFoods().size() == 0) {
-            return "order an item first";
+            return "You must order at least one item first.";
         } else if (order.getDelivery() == null) {
-            return "order is for pick-up";
+            return "Your order is for pick-up.";
         } else {
             return order.getDelivery().outputDeliveryDetails(order);
         }
