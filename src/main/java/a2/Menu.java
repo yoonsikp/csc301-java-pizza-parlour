@@ -43,15 +43,16 @@ public class Menu {
      List<String> getDrinks(){
         return new ArrayList<>(drinkSet.keySet());
     }
-
     /**
-     * Getter for the price of a specific pizza on the menu.
+     * Getter for the price of a specific pizza on the menu depending on the type, size and toppings
+     * on the pizza.
      * @param pizzaType the type of pizza to check price for
      * @param pizzaSize the size of pizza to check price for
+     * @param numExtraToppings the number of extra toppings for pizza
      * @return the price of the specified pizza
      */
-     Float getPizzaPrice(String pizzaType, String pizzaSize){
-        return this.pizzaSet.get(pizzaType).get(pizzaSize);
+     Float getPizzaPrice(String pizzaType, String pizzaSize, int numExtraToppings){
+        return this.pizzaSet.get(pizzaType).get(pizzaSize) + numExtraToppings * this.toppingPrice;
     }
 
     /**
@@ -143,7 +144,9 @@ public class Menu {
             menuString.append(this.drinkSet.get(drink).toString());
             menuString.append(")\n");
         }
-
+        menuString.append("Additional Toppings: ($");
+        menuString.append(this.toppingPrice);
+        menuString.append(")");
         return menuString.toString();
     }
 

@@ -38,18 +38,12 @@ class Pizza extends Food {
         this.toppings = builder.toppings;
     }
 
-//    void setSize(String pizzaSize) {
-//        this.size = pizzaSize;
-//    }
-
-    String getSize() {
-        return this.size;
-    }
-
     HashMap<String,Integer> getToppings() {
         return this.toppings;
     }
-
+    String getSize(){
+        return this.size;
+    }
     public String toString() {
         StringBuilder pizzaString = new StringBuilder();
         pizzaString.append(this.getType().toUpperCase());
@@ -59,7 +53,7 @@ class Pizza extends Food {
             if(topNum != 0) {
                 if (topNum > 0) pizzaString.append("+");
                 pizzaString.append(topNum);
-                pizzaString.append(" ").append(topping);
+                pizzaString.append(" ").append(topping.toUpperCase());
                 pizzaString.append(", ");
             }
         }
