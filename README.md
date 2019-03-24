@@ -14,10 +14,11 @@ We used  GoogleStyle plugin.
 # The Project Processes
 
 We first read over the specifications of the assignment paying close attention to details. Then we made a UML diagram
-detailing the classes and methods and the interactions between them. We will insert a photo here. This proved to be
-a very helpful artifact, as throughout our coding experience, we refered back to the diagram many times, making changes
-to it and sharing the changes with one another. Making this diagram definitely cut the amount of time we would have
-spent doing the project in half. It also allowed us both to be on the same page throughout the process.
+detailing the classes and methods and the interactions between them. We have included an image of our original UML
+diagram in the root directory of this project. This proved to be a very helpful artifact, as throughout our coding
+experience, we refered back to the diagram many times, making changes to it and sharing the changes with one another.
+Making this diagram definitely cut the amount of time we would have spent doing the project in half. It also allowed us
+both to be on the same page throughout the process.
 
 Then we split up the functionality into tasks.
 
@@ -51,36 +52,62 @@ Once we finished the pair programming exercise, we split the rest of the functio
 
 # Design Patterns
 
-We implemented a few design patterns in this project to make various aspects of the design much more neat and
-concise, and altogether make the project structure easier to understand, use, and augment by potential future
-developers. The following are the design patterns we have implemented.
-
-Factory Design Pattern: <br />
-    We used factory to implement a delivery factory, which uses a builder class to make one of a
-few different kinds of deliveries. For the time being, the delivery types we have are the HouseDelivery,
-UbereatsDelivery and FoodoraDelivery. These three delivery types are classes that extend an abstract Delivery class.
-The reason for this is that all three of these delivery types are very similar in that the only difference between
-them that merits separation into separate classes is the method of sending delivery details to the company requiring
-them. This functionality is implemented by the abstract method <outputDeliveryDetails> in the Delivery class, which
-is overridden in HouseDelivery, UbereatsDelivery and FoodoraDelivery depending on the format required. <br />
-    We used the factory design pattern to create instances of the different kinds of deliveries behind-the-scenes, so
-that other classes wouldn't need to have knowledge about how to create a Delivery and the specifics of the three
-different Delivery classes we have currently. This way, we can maintain a single responsibility principle, as different
-classes have more strongly defined single responsibilities. Additionally, by delegating responsibility only to one
-class whose sole purpose is to have knowledge about the different Delivery types as well as maintaining an abstract
-Delivery class that can be extended by specific Delivery types, it will be very easy to add more Delivery types and
-have them instantiated by the factory as well. <br />
-<br />
 Builder: <br />
-    We used the builder design pattern for construction of deliveries and food items. In Delivery, we created a
-static Builder class that is responsible for constructing a Delivery object and assigning a delivery type, address,
-and orderID to it. In Food, we created an abstract static Builder class that is extended in Drink and Pizza. The
-Pizza Builder is responsible for constructing a Pizza object and assigning to it a pizza type, size, list of toppings,
-and price. The Drink Builder is responsible for constructing a Drink object and assigning to it a drink type and price.
-<br />
+    We implemented two different Builders for construction of Delivery items and Food items.< br/>
+    In the Delivery class, we implemented a non-abstract builder that constructs Delivery items and assigns to them
+an address, type and orderID. Delivery is extended by three different subclasses, UbereatsDelivery, FoodoraDelivery, and
+HouseDelivery. The three subclasses are constructed the same way, and for the most part have the same functionality.
+The key difference is method outputDeliveryDetails, which has a different output in each of the three subclasses.
+In UbereatsDelivery the output is in JSON format, in FoodoraDelivery the output is in CSV format, and in HouseDelivery
+the output is in text format. Since we only wanted to override one method, and the construction is the same
+for all three subclasses, we were able to use a non-abstract Builder class to construct them. <br />
+    In the Food class, we implemented builders in Pizza and Drink that extend an abstract Builder in the Food class.
+We used an abstract Builder in Food and Builder subclasses in Pizza and Drink because Pizza and Drink objects are
+both constructed differently and have different behaviors. Specifically, Pizzas have extra attributes that Drinks
+don't. Thus for Pizza, the abstract Builder in Food has methods that set attributes type and price, and the Builder in
+Pizza first calls the Builder in Food to set type and price, and then itself sets size and toppings. Using an abstract
+Builder class allows for flexibility and provides the possibility of having multiple subclasses that are related but
+have different construction and functionality. <br />
     We used the builder design pattern in order to break the construction of Delivery and Food objects into two parts:
 collecting arguments and creating an instance. Using this pattern allowed us to fix the issue of constructor tunneling
 by allowing the constructors to instead collect their arguments one at a time. This way, we decrease the change of
-passing incorrect parameters to Delivery and Food constructors. Additionally, this make the code much easier to
-read and understand, and improves the code quality as a whole. <br />
+passing incorrect parameters to Delivery and Food constructors. As we've stated above, this pattern also allows
+different classes that have some similarities in construction and functionality to share some construction attributes.
+Additionally, this make the code much easier to read and understand, and improves the code quality as a whole. <br />
+<br />
+Dependency Injection: <br />
+    For each classes that had dependencies on each other, we implemented dependency injection to keep a class that
+has a dependency on another class from instantiate objects of that class, and instead have those objects instantiated
+by other classes and passed in. An example of this pattern is the dependency between Order and Delivery. An Order can
+have a Delivery, but rather than having Order create a new Delivery when needed, we had a separate DeliveryHandler
+that is the only class responsible for making and setting Delivery objects.
 
+# Design Patterns we Debated Using
+
+Factory Design Pattern: <br />
+    We considered using a factory design pattern and to have one factory interface that is implemented by a
+pizza factory and a drink factory, and another factory that makes Delivery items. Our original solution in fact used a
+factory design pattern. Using this pattern would have been beneficial to this project because we would have been able
+to delegate responsibility of constructing Delivery and Food objects to a separate factory class. This would fall in
+line with Single Responsibility Principle. It would have made our code less coupled and easy to extend.<br />
+    We didn't end up using the factory design pattern however, since we started using the Builder design pattern, and
+we found that it allowed for much easier construction of Pizza and Drink items that are related but still quite
+different. We also felt as if Builders were more complicated and more flexible than the factory design pattern.
+
+# Other Design Features
+
+We made attributes of classes private, and implemented and getters and setters and various other methods in each
+class to have low coupling.<br />
+
+# Changes to make in the future for better code
+
+We felt as if our TerminalReader was slightly long even though each method specifically deals with a functionality of
+the UI, and the TerminalReader itself has the single job to interact with the command line UI. Future changes to better
+our code will include cutting the TerminalReader functions into smaller functions.
+<br />
+We also felt as if the dependency between Order and Delivery was not ideal, specifically in that printing an Order and
+printing a Delivery requires multiple other function calls to other classes within the original function call. For
+example, to print delivery information, TerminalReader calls printDeliveryDetails in DeliveryHandler, which in turn
+calls outputDeliveryDetails in one of the Delivery subclasses, which in turn calls multiple Order methods to get Order
+data. This is something else we would like to fix in the future.
+<br />
