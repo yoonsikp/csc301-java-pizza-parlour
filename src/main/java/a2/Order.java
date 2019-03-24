@@ -56,11 +56,12 @@ public class Order {
             return "No Dishes in Order";
         }
         StringBuilder foodString = new StringBuilder();
+
         for (Food food: this.foods){
             foodString.append(food.toString() + ", ");
         }
 
-        foodString.append("Final Price: " + this.getPrice());
+        foodString.append("Final Price: ($" + this.getPrice() + ")");
 
         return foodString.toString();
     }

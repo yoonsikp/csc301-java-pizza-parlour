@@ -343,7 +343,7 @@ public class TerminalInterface {
         if (template == null){
             pizzaSize = pizzaSizes.get(0);
         } else {
-            pizzaSize = template.getType();
+            pizzaSize = template.getSize();
         }
         printOptions(pizzaSizes);
         index = getIndexResponse(pizzaSizes);
