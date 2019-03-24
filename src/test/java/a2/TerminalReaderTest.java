@@ -94,13 +94,13 @@ public class TerminalReaderTest {
     }
 
     @Test
-    public void checkOrderNumbering() {
+    public void checkOrderHandling() {
         InputStream stream = new ByteArrayInputStream("neworder\n..\nneworder\nexit\n".getBytes(StandardCharsets.UTF_8));
         TerminalReader testTerm = new TerminalReader(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
         String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
         assertEquals("/Order_0$ ", firstOrderLine.substring(0, 10));
-        String secondOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length ];
+        String secondOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 1];
         assertEquals("/Order_1$ ", secondOrderLine);
     }
 
