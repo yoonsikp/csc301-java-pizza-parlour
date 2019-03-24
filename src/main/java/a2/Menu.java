@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Menu {
-    private HashMap<String, HashMap<String, Float>> pizzaSet;
-    private HashMap<String, Float> drinkSet;
-    private List<String> toppingList;
-    private Float toppingPrice;
+
+  private HashMap<String, HashMap<String, Float>> pizzaSet;
+  private HashMap<String, Float> drinkSet;
+  private List<String> toppingList;
+  private Float toppingPrice;
 
 
     /**
@@ -61,42 +62,43 @@ public class Menu {
      * @return the price of the specified drink
      */
      Float getDrinkPrice(String currDrink){ return this.drinkSet.get(currDrink); }
-
     /**
      * Getting for the specific item on the menu with the given specifications. Returns a list of sizes plus prices
      * for a pizza menu item, and the price of a drink menu item.
      * @param menuItem the name of the item to search the menu for
      * @return string representation of the specified menu item
      */
-     String getMenuItem(String menuItem){
-        StringBuilder menuItemString = new StringBuilder();
-        if(this.pizzaSet.containsKey(menuItem)){
-            String pizzaString = menuItem + ": ";
-            menuItemString.append(pizzaString);
-            menuItemString.append(getPizzaSizesAsString(menuItem));
+  String getMenuItem(String menuItem) {
+    menuItem = menuItem.toLowerCase();
+    StringBuilder menuItemString = new StringBuilder();
+    if (this.pizzaSet.containsKey(menuItem)) {
+      String pizzaString = menuItem + ": ";
+      menuItemString.append(pizzaString);
+      menuItemString.append(getPizzaSizesAsString(menuItem));
 
-        }else if(this.drinkSet.containsKey(menuItem)){
-            String drinkString = menuItem + ": ($" + this.drinkSet.get(menuItem).toString() + ")\n";
-            menuItemString.append(drinkString);
-        }
-        return menuItemString.toString();
+    } else if (this.drinkSet.containsKey(menuItem)) {
+      String drinkString = menuItem + ": ($" + this.drinkSet.get(menuItem).toString() + ")";
+      menuItemString.append(drinkString);
+    } else {
+      menuItemString.append("Item not found");
     }
-
+    return menuItemString.toString().toUpperCase();
+  }
     /**
      * Returns a string representation of the different pizza sizes plus prices for the specified pizza type.
      * @param type the type of pizza to check for
      * @return string representation of pizza sizes plus prices
      */
-    private String getPizzaSizesAsString(String type){
-        StringBuilder menuString = new StringBuilder();
-        for(String size : this.pizzaSet.get(type).keySet()){
-            menuString.append(size);
-            menuString.append(" ($");
-            menuString.append(this.pizzaSet.get(type).get(size).toString());
-            menuString.append(") ");
-        }
-        return menuString.toString();
+  private String getPizzaSizesAsString(String type) {
+    StringBuilder menuString = new StringBuilder();
+    for (String size : this.pizzaSet.get(type).keySet()) {
+      menuString.append(size);
+      menuString.append(" ($");
+      menuString.append(this.pizzaSet.get(type).get(size).toString());
+      menuString.append(") ");
     }
+    return menuString.toString().toUpperCase();
+  }
 
     /**
      * Setter for available pizza toppings.
@@ -127,28 +129,29 @@ public class Menu {
      * Returns a string representation of the menu.
      * @return string representation of menu
      */
-    public String toString() {
-        StringBuilder menuString = new StringBuilder();
-        menuString.append("Pizzas:\n");
-        for(String type: this.pizzaSet.keySet()){
-            String pizzaString = "- " + type + " ";
-            menuString.append(pizzaString);
-            menuString.append(" ");
-            menuString.append(getPizzaSizesAsString(type));
-            menuString.append("\n");
-        }
-        menuString.append("Drinks:\n");
-        for(String drink : this.drinkSet.keySet()){
-            String drinkString = "- " + drink + " ($";
-            menuString.append(drinkString);
-            menuString.append(this.drinkSet.get(drink).toString());
-            menuString.append(")\n");
-        }
-        menuString.append("Additional Toppings: ($");
-        menuString.append(this.toppingPrice);
-        menuString.append(")");
-        return menuString.toString();
+
+  public String toString() {
+    StringBuilder menuString = new StringBuilder();
+    menuString.append("Pizzas:\n");
+    for (String type : this.pizzaSet.keySet()) {
+      String pizzaString = "- " + type + " ";
+      menuString.append(pizzaString);
+      menuString.append(" ");
+      menuString.append(getPizzaSizesAsString(type));
+      menuString.append("\n");
     }
+    menuString.append("Drinks:\n");
+    for (String drink : this.drinkSet.keySet()) {
+      String drinkString = "- " + drink + " ($";
+      menuString.append(drinkString);
+      menuString.append(this.drinkSet.get(drink).toString());
+      menuString.append(")\n");
+    }
+    menuString.append("Additional Toppings: ($");
+    menuString.append(this.toppingPrice);
+    menuString.append(")");
+    return menuString.toString().toUpperCase();
+  }
 
     /**
      * Setter for the price of toppings on the menu.

@@ -11,9 +11,10 @@ import java.nio.charset.StandardCharsets;
 
 public class PizzaParlourTest {
 
-    @Test
-    public void fakeTest() {
-        assert(true);
-    }
-
+  @Test
+  public void pizzaParlourStartsExits() {
+    System.setIn(new ByteArrayInputStream("exit\n".getBytes(StandardCharsets.UTF_8)));
+    String[] args = {};
+    PizzaParlour.main(args);
+  }
 }

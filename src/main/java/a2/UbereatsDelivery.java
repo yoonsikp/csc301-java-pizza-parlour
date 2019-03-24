@@ -32,10 +32,9 @@ public class UbereatsDelivery extends Delivery {
         deliveryDetailsJSON.put("Order Details", sj.toString());
         deliveryDetailsJSON.put("Order Number", order.getOrderID());
 
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
 
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        return gson.toJson(deliveryDetailsJSON);
-    }
+    return gson.toJson(deliveryDetailsJSON);
+  }
 }

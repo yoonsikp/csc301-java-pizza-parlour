@@ -2,7 +2,7 @@ package a2;
 
 import java.util.StringJoiner;
 
-public class FoodoraDelivery extends Delivery{
+public class FoodoraDelivery extends Delivery {
 
     /**
      * Constructor for a Foodora delivery.
@@ -31,8 +31,8 @@ public class FoodoraDelivery extends Delivery{
         deliveryCSV.append(sj.toString());
         deliveryCSV.append(",").append(order.getOrderID());
 
-        return deliveryCSV.toString();
-    }
+    return deliveryCSV.toString();
+  }
 
 
 }

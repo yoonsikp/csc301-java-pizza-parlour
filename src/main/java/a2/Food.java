@@ -1,43 +1,41 @@
 package a2;
 
-import java.util.HashMap;
+abstract class Food {
 
-public abstract class Food {
+  private final String type;
+  private final Float price;
 
-    public abstract static class FoodBuilder <T extends FoodBuilder<T>> {
+  Food(FoodBuilder builder) {
+    this.type = builder.type;
+    this.price = builder.price;
+  }
 
-        private String type;
-        private Float price;
+  String getType() {
+    return this.type;
+  }
 
-        protected abstract T getThis();
+  Float getPrice() {
+    return this.price;
+  }
 
-        T type(String type){
-            this.type = type;
-            return getThis();
-        }
-
-        T price(Float price) {
-            this.price = price;
-            return getThis();
-        }
-
-        public abstract Food build();
-
-    }
+  public abstract static class FoodBuilder<T extends FoodBuilder<T>> {
 
     private String type;
     private Float price;
 
-    Food(FoodBuilder builder) {
-        this.type = builder.type;
-        this.price = builder.price;
+    protected abstract T getThis();
+
+    T type(String type) {
+      this.type = type;
+      return getThis();
     }
 
-    String getType() {
-        return this.type;
+    T price(Float price) {
+      this.price = price;
+      return getThis();
     }
 
-    Float getPrice(){
-        return this.price;
-    }
+    public abstract Food build();
+
+  }
 }
