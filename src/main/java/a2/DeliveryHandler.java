@@ -32,7 +32,11 @@ public class DeliveryHandler {
     }
 
     public String printDeliveryDetails(Order order){
-        return order.getDelivery().outputDeliveryDetails(order);
+        if(order.getDelivery() == null){
+            return "order is for pick-up";
+        }else {
+            return order.getDelivery().outputDeliveryDetails(order);
+        }
     }
 
 
