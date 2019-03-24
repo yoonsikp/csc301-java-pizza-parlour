@@ -52,9 +52,11 @@ public class Order {
 
     public String toString(){
 
-        List<Food> foods = this.getFoods();
+        if (foods.size() == 0) {
+            return "No Dishes in Order";
+        }
         StringBuilder foodString = new StringBuilder();
-        for (Food food: foods){
+        for (Food food: this.foods){
             foodString.append(food.toString() + ", ");
         }
 

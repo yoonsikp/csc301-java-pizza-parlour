@@ -38,14 +38,6 @@ class Pizza extends Food {
         this.toppings = builder.toppings;
     }
 
-//    void setSize(String pizzaSize) {
-//        this.size = pizzaSize;
-//    }
-
-    String getSize() {
-        return this.size;
-    }
-
     HashMap<String,Integer> getToppings() {
         return this.toppings;
     }
