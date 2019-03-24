@@ -39,6 +39,12 @@ extremely advanced at coding or code design. We have different strengths and wea
 together, we were able to offer each other constructive advice and teach each other new things. Additionally, we were
 able to learn some new techniques together and practice using them with each other as support and an extra set of
 eyes.
+Although pair programming was very effective for us as a method of generating clean and well-designed code, it did
+waste programmer hours, since the both of us had to work together on the same problem. When the driver was finishing
+relatively simple tasks, and the navigator was just watching, it was a little wasteful in terms of time.
+We concluded that pair programming is extremely beneficial for performing difficult tasks that take a lot of thinking
+and design, but not so beneficial when the task at hand includes things like programming very simple blocks of code
+or documentation.
 
 Once we finished the pair programming exercise, we split the rest of the functionalities up and began coding separately.
 
