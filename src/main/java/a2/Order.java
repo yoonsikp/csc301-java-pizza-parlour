@@ -1,6 +1,7 @@
 package a2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Order {
@@ -48,4 +49,17 @@ public class Order {
         this.foods.remove(food);
     }
     public void addToPrice(Float price){ this.totalPrice += price; }
+
+    public String toString(){
+
+        List<Food> foods = this.getFoods();
+        StringBuilder foodString = new StringBuilder();
+        for (Food food: foods){
+            foodString.append(food.toString() + ", ");
+        }
+
+        foodString.append("Final Price: " + this.getPrice());
+
+        return foodString.toString();
+    }
 }

@@ -394,6 +394,7 @@ public class TerminalReader {
                     System.out.println("\trmorder           \tCancel the Currently Selected Order");
                     System.out.println("\tdeliver           \tRequest for Delivery Service");
                     System.out.println("\trmdeliver         \tCancel Delivery Service");
+                    System.out.println("\tdelivdetails      \tView Delivery Details");
                     System.out.println("\tprintorder        \tDetails about the Current Order");
                     System.out.println("\tnewdish pizza     \tAdd a Pizza to the Current Order");
                     System.out.println("\tnewdish drink     \tAdd a Drink to the Current Order");
@@ -414,6 +415,9 @@ public class TerminalReader {
                 else if (command[0].equals("rmdeliver") && command.length == 1) {
                     this.deliveryHandler.removeDelivery(this.currentOrder);
                     System.out.println("we have cancelled the delivery, your item will be ready for pick-up");
+                }
+                else if (command[0].equals("delivdetails") && command.length ==1){
+                    System.out.println(this.deliveryHandler.printDeliveryDetails(currentOrder));
                 }
                 else if (command[0].equals("printorder") && command.length == 1) {
                     prettyPrintCurrentOrder();
@@ -475,4 +479,6 @@ public class TerminalReader {
         Delivery delivery = this.deliveryHandler.createDelivery(this.currentOrder, address, delivTypeIndex);
         this.currentOrder.setDelivery(delivery);
     }
+
+
 }

@@ -24,6 +24,7 @@ class Pizza extends Food {
     public ArrayList<String> getToppings() {
         return this.toppings;
     }
+
     public String toString() {
         StringBuilder pizzaString = new StringBuilder();
         pizzaString.append(this.getType());
