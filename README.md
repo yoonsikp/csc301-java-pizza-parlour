@@ -1,5 +1,11 @@
 # a2-starter
 
+# Quick Run
+Clone the repo and run:
+```
+java -jar "a2_pair55.jar"
+```
+
 # The Project Processes
 
 We first read over the specifications of the assignment paying close attention to details. Then we made a UML diagram
