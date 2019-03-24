@@ -20,7 +20,7 @@ class Pizza extends Food {
         }
         public Food build(){
             if (this.size == null) {
-                this.size = "M";
+                this.size = "m";
             }
             if (this.toppings == null){
                 this.toppings = new HashMap<>();
@@ -57,8 +57,8 @@ class Pizza extends Food {
                 pizzaString.append(", ");
             }
         }
-        pizzaString.append("size ");
-        pizzaString.append(this.size);
+        pizzaString.append("Size ");
+        pizzaString.append(this.size.toUpperCase());
         pizzaString.append(" ($");
         pizzaString.append(this.getPrice().toString());
         pizzaString.append(")");

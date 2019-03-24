@@ -1,5 +1,6 @@
 package a2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -205,15 +206,23 @@ public class TerminalInterface {
             List<Food> allFoods = this.currentOrder.getFoods();
             if (allFoods.size() >0) {
                 System.out.println("Choose Dish from Order:");
-                for (int i = 0; i < allFoods.size(); i++){
-                    StringBuilder tempString = new StringBuilder("[");
-                    tempString.append(Integer.toString(i));
-                    tempString.append("] ");
-                    tempString.append(allFoods.get(i).toString());
-                    System.out.println(tempString);
+                List<String> allFoodStrings = new ArrayList<>();
+                Food food = allFoods.get(0);
+                for (Food iterFood: allFoods){
+                    allFoodStrings.add(iterFood.toString());
                 }
-                //TODO add more checks on line
-                this.currentFood = allFoods.get(Integer.parseInt(this.streamScanner.nextLine()));
+                printOptions(allFoodStrings);
+                int index = getIndexResponse(allFoodStrings);
+                if (index == -1) {
+                    System.out.println("Invalid Option");
+                    return;
+                }
+                if (index == -2) {
+                    System.out.println("Defaulting to: " + food.toString());
+                } else {
+                    food = allFoods.get(index);
+                }
+                this.currentFood = food;
             } else {
                 System.out.println("No Dishes in Order");
             }
@@ -382,14 +391,18 @@ public class TerminalInterface {
     }
 
     private void getDeliveryDetails() {
-        System.out.println("Select your delivery type by number");
+        System.out.println("Select your Delivery Type");
         List<String> deliveryMethods = this.deliveryHandler.getDeliveryMethods();
         printOptions(deliveryMethods);
         int index = getIndexResponse(deliveryMethods);
+        if (index < 0) {
+            System.out.println("Invalid Option");
+            return;
+        }
         String deliverType = deliveryMethods.get(index);
-        System.out.println("Please tell us your address");
+        System.out.println("Please Enter your Address");
         String address = this.streamScanner.nextLine();
-        System.out.println("Delivery request has been created");
+        System.out.println("Delivery Request has been Created");
         Delivery delivery = this.deliveryHandler.createDelivery(this.currentOrder, address, deliverType);
         this.currentOrder.setDelivery(delivery);
     }
@@ -433,7 +446,7 @@ public class TerminalInterface {
                         Integer initialValue = toppings.get(pizzaToppings.get(-index));
                         toppings.put(pizzaToppings.get(-index), initialValue - 1);
                         numToppings++;
-                    } else if ( index < pizzaToppings.size() ){
+                    } else if ( index >= 0 && index < pizzaToppings.size() ){
                         Integer initialValue = toppings.get(pizzaToppings.get(index));
                         toppings.put(pizzaToppings.get(index), initialValue + 1);
                         numToppings++;

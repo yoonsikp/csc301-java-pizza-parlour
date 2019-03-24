@@ -11,7 +11,11 @@ public class PizzaParlour {
         orderHandler = new OrderHandler();
         deliveryHandler = new DeliveryHandler();
         TerminalInterface terminalInterface = new TerminalInterface();
-        terminalInterface.startReading();
+        try {
+            terminalInterface.startReading();
+        } catch (java.util.NoSuchElementException e){
+            //Time to exit
+        }
     }
     public static Menu getMenu() {
         return menu;
