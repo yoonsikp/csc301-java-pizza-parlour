@@ -9,6 +9,7 @@ public class Menu {
     private HashMap<String, HashMap<String, Float>> pizzaSet;
     private HashMap<String, Float> drinkSet;
     private List<String> toppingList;
+    private Float toppingPrice;
 
 
     public List<String> getPizzaTypes(){
@@ -70,10 +71,6 @@ public class Menu {
         this.drinkSet = drinkSet;
     }
 
-    public void addNewPizzaToMenu(String type){
-
-    }
-
     public String toString() {
         StringBuilder menuString = new StringBuilder();
         menuString.append("Pizzas:\n");
@@ -94,4 +91,9 @@ public class Menu {
 
         return menuString.toString();
     }
+
+    public void setToppingPrice(Float toppingPrice) {
+        this.toppingPrice = toppingPrice;
+    }
+
 }

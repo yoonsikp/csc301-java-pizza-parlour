@@ -1,5 +1,8 @@
 {
-  "pizzas": {"neopolitan": {"S": 4, "M": 5, "L": 6}, "cheese": {"S": 4, "M": 5, "L": 6}, "crazy pizza": {"S": 4, "M": 5, "L": 60}},
-  "toppings": [mushrooms, onions, pepperoni, olives, tomatoes, jalepenos, chicken, beef],
-  "drinks": {"cola": 1.50,"sprite": 1.25}
+  "pizzas": {"neopolitan": {"S": 14, "M": 20, "L": 26}, "cheese": {"S": 9, "M": 12, "L": 16}, "crazy": {"S": 40, "M": 50, "L": 60}},
+  "toppings": [
+    "mushrooms", "onions", "pepperoni", "olives", "tomatoes", "jalepenos", "chicken", "beef"
+  ],
+  "drinks": {"cola": 1.50,"sprite": 1.25},
+  "additionalToppingPrice": 3
 }
