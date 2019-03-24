@@ -279,10 +279,10 @@ public class TerminalInterfaceTest {
 
     @Test
     public void stopDeliver() {
-        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\ndeliver\n0\nstgeorge\nrmdeliver\nprintdeliver\nexit\n".getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\ndeliver\n0\nstgeorge\nrmdeliver\nprintorder\nexit\n".getBytes(StandardCharsets.UTF_8));
         TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
-        assertTrue(outContent.toString().contains("pick-up"));
+        assertTrue(outContent.toString().contains("Delivery Method: Pickup"));
     }
     private Menu getEmptyMenu(){
         return new Menu();
