@@ -28,8 +28,8 @@ public class Menu {
         return new ArrayList<String>(drinkSet.keySet());
     }
 
-    public Float getPizzaPrice(String pizzaType, String pizzaSize){
-        return this.pizzaSet.get(pizzaType).get(pizzaSize);
+    public Float getPizzaPrice(String pizzaType, String pizzaSize, int numExtraToppings){
+        return this.pizzaSet.get(pizzaType).get(pizzaSize) + numExtraToppings * this.toppingPrice;
     }
 
     public Float getDrinkPrice(String currDrink){ return this.drinkSet.get(currDrink); }
@@ -88,7 +88,9 @@ public class Menu {
             menuString.append(this.drinkSet.get(drink).toString());
             menuString.append(")\n");
         }
-
+        menuString.append("Additional Toppings: ($");
+        menuString.append(this.toppingPrice);
+        menuString.append(")");
         return menuString.toString();
     }
 

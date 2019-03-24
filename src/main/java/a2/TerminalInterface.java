@@ -375,11 +375,16 @@ public class TerminalInterface {
             pizzaToppings = template.getToppings();
         }
         changeToppingsForPizza(pizzaToppings);
+
+        int numExtraToppings = 0;
+        for (Integer toppingNum: pizzaToppings.values()) {
+            if (toppingNum > 0) numExtraToppings += toppingNum;
+        }
         Food newPizza = new Pizza.Builder()
                 .type(pizzaType)
                 .toppings(pizzaToppings)
                 .size(pizzaSize)
-                .price(this.currentMenu.getPizzaPrice(pizzaType, pizzaSize))
+                .price(this.currentMenu.getPizzaPrice(pizzaType, pizzaSize, numExtraToppings))
                 .build();
         this.currentOrder.addFood(newPizza);
         if (template == null){

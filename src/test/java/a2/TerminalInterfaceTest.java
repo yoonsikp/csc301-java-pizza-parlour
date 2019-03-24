@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
-public class TerminalReaderTest {
+public class TerminalInterfaceTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -40,7 +40,7 @@ public class TerminalReaderTest {
     @Test
     public void invalidCommandTest() {
         InputStream stream = new ByteArrayInputStream("hi\nexit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream, getEmptyMenu());
+        TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
         testTerm.startReading();
         assertEquals("/$ Invalid Command", outContent.toString().split("\\n")[2]);
     }
@@ -48,7 +48,7 @@ public class TerminalReaderTest {
     @Test
     public void initTest() {
         InputStream stream = new ByteArrayInputStream("exit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream, getEmptyMenu());
+        TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
         testTerm.startReading();
         assertEquals("/$ ", outContent.toString().split("\\n")[2]);
     }
@@ -56,19 +56,19 @@ public class TerminalReaderTest {
     @Test
     public void constructorTest() {
         InputStream stream = new ByteArrayInputStream("exit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream);
+        TerminalInterface testTerm = new TerminalInterface(stream);
         testTerm.startReading();
     }
 
     @Test
     public void basicConstructorTest() {
-        TerminalReader testTerm = new TerminalReader();
+        TerminalInterface testTerm = new TerminalInterface();
     }
 
     @Test
     public void shallowHelp() {
         InputStream stream = new ByteArrayInputStream("?\nexit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream, getEmptyMenu());
+        TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
         testTerm.startReading();
         assertEquals("/$ \tmenu               \tPrint out the Current Menu", outContent.toString().split("\\n")[2]);
         assertEquals("\tlsorder            \tList all Current Orders and their IDs", outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2]);
@@ -77,7 +77,7 @@ public class TerminalReaderTest {
     @Test
     public void middleHelp() {
         InputStream stream = new ByteArrayInputStream("neworder\n?\nexit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream, getEmptyMenu(), new OrderHandler(), new DeliveryHandler());
+        TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
         assertEquals("/Order_0$ \tmenu              \tPrint out the Current Menu", outContent.toString().split("\\n")[3]);
         assertEquals("\t..                \tDeselect Currently Selected Order", outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2]);
@@ -87,7 +87,7 @@ public class TerminalReaderTest {
     @Test
     public void deepHelp() {
         InputStream stream = new ByteArrayInputStream("neworder\nnewdish drink\n0\nseldish\n0\n?\nexit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
         assertEquals("\trmdish            \tRemove the Current Dish from the Order", outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 3]);
         assertEquals("\t..                \tDeselect Currently Selected Dish", outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2]);
@@ -96,7 +96,7 @@ public class TerminalReaderTest {
     @Test
     public void checkOrderHandling() {
         InputStream stream = new ByteArrayInputStream("neworder\n..\nneworder\nexit\n".getBytes(StandardCharsets.UTF_8));
-        TerminalReader testTerm = new TerminalReader(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
+        TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
         String firstOrderLine = outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 2];
         assertEquals("/Order_0$ ", firstOrderLine.substring(0, 10));
