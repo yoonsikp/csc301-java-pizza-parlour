@@ -308,7 +308,7 @@ public class TerminalReader {
             List<Food> allFoods = this.currentOrder.getFoods();
             if (allFoods.size() >0) {
                 for (Food food: allFoods){
-                    System.out.println(food.toString());
+                    System.out.println("- " + food.toString());
                 }
             } else {
                 System.out.println("No Dishes in Order");
@@ -318,7 +318,7 @@ public class TerminalReader {
         System.out.println("Invalid Command");
     }
     private void prettyPrintCurrentOrder(){
-        System.out.println("List of Dishes");
+        System.out.println("List of Dishes:");
         List<Food> foods = this.currentOrder.getFoods();
         for (Food food: foods){
             System.out.println("- " + food.toString());

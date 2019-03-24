@@ -52,8 +52,8 @@ class Pizza extends Food {
 
     public String toString() {
         StringBuilder pizzaString = new StringBuilder();
-        pizzaString.append(this.getType());
-        pizzaString.append(" pizza with ");
+        pizzaString.append(this.getType().toUpperCase());
+        pizzaString.append(" Pizza with ");
         for (String topping : this.toppings.keySet()) {
             int topNum = this.toppings.get(topping);
             if(topNum != 0) {

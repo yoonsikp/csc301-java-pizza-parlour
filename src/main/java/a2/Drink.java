@@ -14,7 +14,7 @@ public class Drink extends Food{
         super(builder);
     }
     public String toString(){
-        return this.getType() +
+        return this.getType().toUpperCase() + " Drink" +
                 " ($" + this.getPrice() + ")";
     }
 
