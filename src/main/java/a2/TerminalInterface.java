@@ -276,6 +276,7 @@ public class TerminalInterface {
             System.out.println("Drink Successfully Added to Order");
         } else {
             this.currentOrder.removeFood(template);
+            this.currentFood = currFood;
             System.out.println("Drink Has Been Modified");
         }
         return;
@@ -369,6 +370,7 @@ public class TerminalInterface {
             System.out.println("Pizza Successfully Added to Order");
         } else {
             this.currentOrder.removeFood(template);
+            this.currentFood = newPizza;
             System.out.println("Pizza Has Been Modified");
         }
     }
