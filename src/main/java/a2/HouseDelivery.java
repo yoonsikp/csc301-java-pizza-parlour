@@ -1,6 +1,5 @@
 package a2;
 
-import java.util.HashMap;
 
 public class HouseDelivery extends Delivery {
 
@@ -8,14 +7,16 @@ public class HouseDelivery extends Delivery {
         super(builder);
     }
 
+    /**
+     * Returns a string representation of the delivery details of a given HouseDelivery.
+     * @param order the order whose delivery details we want
+     * @return text representation of order's delivery
+     */
     public String outputDeliveryDetails(Order order){
         //as text
-        StringBuilder delivDetails = new StringBuilder();
-        delivDetails.append("Address: ").append(order.getDelivery().getAddress()).append("\n");
-        delivDetails.append("Order Details: ").append("\n");
-        delivDetails.append(order.toString()).append("\n");
-        delivDetails.append("Order Number: ").append(order.getOrderID());
-
-        return delivDetails.toString();
+        return "Address: " + order.getDelivery().getAddress() + "\n" +
+                "Order Details: " + "\n" +
+                order.toString() + "\n" +
+                "Order Number: " + order.getOrderID();
     }
 }
