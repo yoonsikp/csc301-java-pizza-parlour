@@ -96,7 +96,7 @@ public class TerminalReader {
                     System.out.println("we have cancelled the delivery, your item will be ready for pick-up");
                 }
                 else if (command[0].equals("delivdetails") && command.length ==1){
-                    System.out.println(this.deliveryHandler.getDeliveryDetails(currentOrder));
+                    System.out.println(this.deliveryHandler.printDeliveryDetails(currentOrder));
                 }
                 else if (command[0].equals("printorder") && command.length == 1) {
                     prettyPrintCurrentOrder();
