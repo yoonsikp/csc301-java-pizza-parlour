@@ -66,7 +66,7 @@ public class TerminalInterfaceTest {
     }
 
     @Test
-    public void shallowHelp() {
+    public void mainMenuHelp() {
         InputStream stream = new ByteArrayInputStream("?\nexit\n".getBytes(StandardCharsets.UTF_8));
         TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu());
         testTerm.startReading();
@@ -75,7 +75,7 @@ public class TerminalInterfaceTest {
     }
 
     @Test
-    public void middleHelp() {
+    public void orderHelp() {
         InputStream stream = new ByteArrayInputStream("neworder\n?\nexit\n".getBytes(StandardCharsets.UTF_8));
         TerminalInterface testTerm = new TerminalInterface(stream, getEmptyMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
@@ -85,8 +85,8 @@ public class TerminalInterfaceTest {
     }
 
     @Test
-    public void deepHelp() {
-        InputStream stream = new ByteArrayInputStream("neworder\nnewdish drink\n0\nseldish\n0\n?\nexit\n".getBytes(StandardCharsets.UTF_8));
+    public void dishHelp() {
+        InputStream stream = new ByteArrayInputStream("neworder\nnewdrink\n0\nseldish\n0\n?\nexit\n".getBytes(StandardCharsets.UTF_8));
         TerminalInterface testTerm = new TerminalInterface(stream, getFakeMenu(), new OrderHandler(), new DeliveryHandler());
         testTerm.startReading();
         assertEquals("\trmdish            \tRemove the Current Dish from the Order", outContent.toString().split("\\n")[outContent.toString().split("\\n").length - 3]);
