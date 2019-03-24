@@ -314,7 +314,7 @@ public class TerminalInterface {
             System.out.println("Choose Pizza Size:");
         } else {
             System.out.printf("Current Pizza Size: ");
-            System.out.println(template.getType());
+            System.out.println(template.getSize());
             System.out.println("Change to ... (Press Enter to Skip)");
         }
         List<String> pizzaSizes = this.currentMenu.getPizzaSizes(pizzaType);
