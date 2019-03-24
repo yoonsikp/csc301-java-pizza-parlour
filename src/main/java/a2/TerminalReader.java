@@ -1,5 +1,6 @@
 package a2;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -42,11 +43,10 @@ public class TerminalReader {
             StringBuilder tempString = new StringBuilder("[");
             tempString.append(Integer.toString(i));
             tempString.append("] ");
-            tempString.append(allOptions.get(i).substring(0, 1).toUpperCase() + allOptions.get(i).substring(1));
+            tempString.append(allOptions.get(i).toUpperCase());
             System.out.println(tempString);
         }
     }
-
     private void printAllOrders() {
         List <Order> allOrders = this.orderHandler.getAllOrders();
 
@@ -58,7 +58,6 @@ public class TerminalReader {
             System.out.println(tempString);
         }
     }
-
     private void handleOrderState(String[] command){
         if (command[0].equals("neworder") && command.length == 1) {
             System.out.println("Order Created: Try 'newdish pizza'");
@@ -101,8 +100,7 @@ public class TerminalReader {
         }
         System.out.println("Invalid Command");
     }
-
-    private int addToppingsToPizza(Pizza currPizza){
+    private int changeToppingsForPizza(HashMap<String, Integer> toppings){
         List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
         int numToppings = 0;
         if (pizzaToppings.size() > 0) {
@@ -115,13 +113,16 @@ public class TerminalReader {
                 try {
                     index = Integer.parseInt(topping.trim());
                     if (topping.trim().equals("-0")) {
-                        currPizza.removeTopping(pizzaToppings.get(0));
+                        Integer initialValue = toppings.get(pizzaToppings.get(0));
+                        toppings.put(pizzaToppings.get(0), initialValue - 1);
                         numToppings++;
                     } else if (index < 0 && (-index < pizzaToppings.size()) ){
-                        currPizza.removeTopping(pizzaToppings.get(-index));
+                        Integer initialValue = toppings.get(pizzaToppings.get(-index));
+                        toppings.put(pizzaToppings.get(-index), initialValue - 1);
                         numToppings++;
                     } else if ( index < pizzaToppings.size() ){
-                        currPizza.addTopping(pizzaToppings.get(index));
+                        Integer initialValue = toppings.get(pizzaToppings.get(index));
+                        toppings.put(pizzaToppings.get(index), initialValue + 1);
                         numToppings++;
                     } else {
                         System.out.printf("Skipping unknown topping:");
@@ -137,74 +138,153 @@ public class TerminalReader {
     }
     private int getIndexResponse (List<String> genericList) {
         String response = this.streamScanner.nextLine();
-        if (response.trim().equals("")) return -1;
+        if (response.trim().equals("")) return -2;
         int index;
         try {
             index = Integer.parseInt(response.trim());
             if (index >= 0 && (index < genericList.size()) ){
                 return (index);
             } else {
-                System.out.println("Invalid Option");
                 return -1;
             }
         } catch (NumberFormatException e){
-            System.out.println("Invalid Option");
             return -1;
         }
     }
+    private void addDrink(Drink template){
+        if (template == null) {
+            System.out.println("Choose a Drink:");
+        } else {
+            System.out.printf("Current Drink Type: ");
+            System.out.println(template.getType());
+            System.out.println("Change to ... (Press Enter to Skip)");
+        }
+        List<String> drinks = this.currentMenu.getDrinks();
+        String drink;
+        if (template == null){
+            drink = drinks.get(0);
+        } else {
+            drink = template.getType();
+        }
+        printOptions(drinks);
+        int index = getIndexResponse(drinks);
+        if (index == -1) {
+            System.out.println("Invalid Option");
+            return;
+        }
+        if (index == -2) {
+            System.out.println("Defaulting to: " + drink);
+        } else {
+            drink = drinks.get(index);
+        }
+        Food currFood = new Drink.Builder()
+                .type(drink)
+                .price(this.currentMenu.getDrinkPrice(drink))
+                .build();
+        this.currentOrder.addFood(currFood);
+        if (template == null){
+            System.out.println("Drink Successfully Added to Order");
+        } else {
+            this.currentOrder.removeFood(template);
+            System.out.println("Drink Has Been Modified");
+        }
+        return;
+    }
+    private void addPizza(Pizza template){
+        if (template == null) {
+            System.out.println("Choose Pizza Type:");
+        } else {
+            System.out.printf("Current Pizza Type: ");
+            System.out.println(template.getType());
+            System.out.println("Change to ... (Press Enter to Skip)");
+        }
 
+        List<String> pizzaTypes = this.currentMenu.getPizzaTypes();
+        String pizzaType;
+        if (template == null){
+            pizzaType = pizzaTypes.get(0);
+        } else {
+            pizzaType = template.getType();
+        }
+        printOptions(pizzaTypes);
+
+        int index = getIndexResponse(pizzaTypes);
+        if (index == -1) {
+            System.out.println("Invalid Option");
+            return;
+        }
+        if (index == -2) {
+            System.out.println("Defaulting to: " + pizzaType);
+        } else {
+            pizzaType = pizzaTypes.get(index);
+        }
+
+        if (template == null) {
+            System.out.println("Choose Pizza Size:");
+        } else {
+            System.out.printf("Current Pizza Size: ");
+            System.out.println(template.getType());
+            System.out.println("Change to ... (Press Enter to Skip)");
+        }
+        List<String> pizzaSizes = this.currentMenu.getPizzaSizes(pizzaType);
+        String pizzaSize;
+        if (template == null){
+            pizzaSize = pizzaSizes.get(0);
+        } else {
+            pizzaSize = template.getType();
+        }
+        printOptions(pizzaSizes);
+        index = getIndexResponse(pizzaSizes);
+        if (index == -1) {
+            System.out.println("Invalid Option");
+            return;
+        }
+        if (index == -2) {
+            System.out.println("Defaulting to: " + pizzaSize);
+        } else {
+            pizzaSize = pizzaSizes.get(index);
+        }
+
+
+        if (template == null) {
+            System.out.println("Choose Toppings Separated by Commas (minus sign to remove a topping):");
+        } else {
+            System.out.printf("Current Toppings: ");
+            System.out.println(template.getToppings());
+            System.out.println("Increase or Decrease (minus sign) Toppings ... (Press Enter to Skip)");
+        }
+        HashMap<String, Integer> pizzaToppings;
+        if(template == null) {
+            pizzaToppings = new HashMap<>();
+            for (String topping: this.currentMenu.getPizzaToppings()){
+                pizzaToppings.put(topping, 0);
+            }
+        } else {
+            pizzaToppings = template.getToppings();
+        }
+        changeToppingsForPizza(pizzaToppings);
+        Food newPizza = new Pizza.Builder()
+                .type(pizzaType)
+                .toppings(pizzaToppings)
+                .size(pizzaSize)
+                .price(this.currentMenu.getPizzaPrice(pizzaType, pizzaSize))
+                .build();
+        this.currentOrder.addFood(newPizza);
+        if (template == null){
+            System.out.println("Pizza Successfully Added to Order");
+        } else {
+            this.currentOrder.removeFood(template);
+            System.out.println("Pizza Has Been Modified");
+        }
+    }
     private void handleFoodState(String[] command){
         if (command[0].equals("newdish") && command.length == 2) {
             if (command[1].toLowerCase().equals("drink")) {
-                System.out.println("Choose a Drink:");
-                List<String> drinks = this.currentMenu.getDrinks();
-                printOptions(drinks);
-                int index = getIndexResponse(drinks);
-                if (index == -1) {
-                    return;
-                }
-
-                String drink = drinks.get(index);
-                DrinkFactory df = new DrinkFactory();
-                Drink currDrink = df.makeFood();
-                currDrink.setType(drink);
-                currDrink.setPrice(this.currentMenu.getDrinkPrice(drink));
-                this.currentOrder.addFood(currDrink);
-                System.out.println("Drink Successfully Added to Order");
+                addDrink(null);
                 return;
             }
             if (command[1].toLowerCase().equals("pizza")){
-                System.out.println("Choose Pizza Type:");
-                List<String> pizzaTypes = this.currentMenu.getPizzaTypes();
-                printOptions(pizzaTypes);
-
-                int index = getIndexResponse(pizzaTypes);
-                if (index == -1) {
-                    return;
-                }
-                String pizzaType = pizzaTypes.get(index);
-
-                System.out.println("Choose Pizza Size:");
-                List<String> pizzaSizes = this.currentMenu.getPizzaSizes(pizzaType);
-                printOptions(pizzaSizes);
-                index = getIndexResponse(pizzaSizes);
-                if (index == -1) {
-                    return;
-                }
-
-                String pizzaSize = pizzaSizes.get(index);
-                PizzaFactory pf = new PizzaFactory();
-                Pizza currPizza = pf.makeFood();
-                currPizza.setType(pizzaType);
-                currPizza.setSize(pizzaSize);
-                currPizza.setPrice(this.currentMenu.getPizzaPrice(pizzaType, pizzaSize));
-                List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
-                if (pizzaToppings.size() > 0) {
-                    System.out.println("Choose Toppings Separated by Commas (minus sign to remove a topping):");
-                    addToppingsToPizza(currPizza);
-                }
-                this.currentOrder.addFood(currPizza);
-                System.out.println("Pizza Successfully Added to Order");
+                addPizza(null);
                 return;
             }
         } else if (command[0].equals("seldish") && command.length == 1) {
@@ -236,109 +316,6 @@ public class TerminalReader {
             return;
         }
         System.out.println("Invalid Command");
-    }
-
-    private void modifyDish() {
-
-        if (this.currentFood instanceof Drink) {
-            System.out.printf("Current Drink Type: ");
-            System.out.println(this.currentFood.getType());
-            System.out.println("Change to ... (Press Enter to Skip)");
-            List<String> drinks = this.currentMenu.getDrinks();
-            printOptions(drinks);
-            String response = this.streamScanner.nextLine();
-            if (!response.equals("")) {
-                int index;
-                try {
-                    index = Integer.parseInt(response.trim());
-                    if (index >= 0 && (index < drinks.size()) ){
-                        this.currentFood.setType(drinks.get(index));
-                        System.out.println("Drink Has Been Modified");
-                        return;
-                    }
-                } catch (NumberFormatException e){}
-                System.out.println("Invalid Option");
-            }
-            System.out.println("Drink Not Modified");
-
-        } else if (this.currentFood instanceof Pizza){
-            boolean modBit = false;
-            Pizza currPizza = (Pizza) this.currentFood;
-            System.out.printf("Current Pizza Type: ");
-            System.out.println(currPizza.getType());
-            System.out.println("Change to ... (Press Enter to Skip)");
-            List<String> pizzaTypes = this.currentMenu.getPizzaTypes();
-            printOptions(pizzaTypes);
-            String response = this.streamScanner.nextLine();
-            if (!response.equals("")) {
-                int index;
-                try {
-                    index = Integer.parseInt(response.trim());
-                    if (index >= 0 && (index < pizzaTypes.size()) ){
-                        currPizza.setType(pizzaTypes.get(index));
-                        modBit = true;
-                    } else {
-                        System.out.println("Invalid Option");
-                        System.out.println("Drink Not Modified");
-                        return;
-                    }
-                } catch (NumberFormatException e){
-                    System.out.println("Invalid Option");
-                    System.out.println("Pizza Not Modified");
-                    return;
-                }
-            }
-
-            System.out.printf("Current Pizza Size: ");
-            System.out.println(currPizza.getSize());
-            System.out.println("Change to ... (Press Enter to Skip)");
-            List<String> pizzaSizes = this.currentMenu.getPizzaSizes(currPizza.getType());
-            printOptions(pizzaSizes);
-            response = this.streamScanner.nextLine();
-
-            if (!response.equals("")) {
-                int index;
-                try {
-                    index = Integer.parseInt(response.trim());
-                    if (index >= 0 && (index < pizzaSizes.size()) ){
-                        currPizza.setSize(pizzaSizes.get(index));
-                        modBit = true;
-                    } else {
-                        System.out.println("Invalid Option");
-                        if (modBit) {
-                            System.out.println("Pizza Has Been Modified");
-                        } else {
-                            System.out.println("Pizza Not Modified");
-                        }
-                        return;
-                    }
-                } catch (NumberFormatException e){
-                    System.out.println("Invalid Option");
-                    if (modBit) {
-                        System.out.println("Pizza Has Been Modified");
-                    } else {
-                        System.out.println("Pizza Not Modified");
-                    }
-                    return;
-                }
-            }
-
-            List<String> pizzaToppings = this.currentMenu.getPizzaToppings();
-            if (pizzaToppings.size() > 0) {
-                System.out.printf("Current Toppings: ");
-                System.out.println(currPizza.getToppings());
-                System.out.println("Increase or Decrease (minus sign) Toppings ... (Press Enter to Skip)");
-                if (addToppingsToPizza(currPizza) > 0) modBit = true;
-            }
-
-            if (modBit) {
-                System.out.println("Pizza Has Been Modified");
-            } else {
-                System.out.println("Pizza Not Modified");
-            }
-        } else {
-            System.out.println("Dish Type can't be modified");
-        }
     }
     private void prettyPrintCurrentOrder(){
         System.out.println("List of Dishes");
@@ -442,7 +419,13 @@ public class TerminalReader {
                 } else if (command[0].equals("printdish") && command.length == 1) {
                     System.out.println(this.currentFood.toString());
                 } else if (command[0].equals("chdish") && command.length == 1) {
-                    modifyDish();
+                    if (this.currentFood instanceof Drink) {
+                        addDrink((Drink) this.currentFood);
+                    } else if (this.currentFood instanceof Pizza){
+                        addPizza((Pizza) this.currentFood);
+                    } else {
+                        System.out.println("Dish Type can't be modified");
+                    }
                 } else {
                     System.out.println("Invalid Command");
                 }
@@ -455,7 +438,7 @@ public class TerminalReader {
             if (this.currentFood != null) {
                 tempSB.append("/");
                 tempSB.append("Food_");
-                tempSB.append(this.currentFood.toString());
+                tempSB.append(this.currentFood.getClass().getSimpleName()+"-"+ this.currentFood.getType().toUpperCase());
             }
             tempSB.append("$ ");
             System.out.printf(tempSB.toString());

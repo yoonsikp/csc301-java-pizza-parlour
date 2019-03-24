@@ -1,27 +1,52 @@
 package a2;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 class Pizza extends Food {
+
+    public static class Builder extends Food.FoodBuilder<Builder> {
+        @Override protected Builder getThis() {
+            return this;
+        }
+        private String size;
+        private HashMap<String,Integer> toppings;
+        Builder size(String size){
+            this.size = size;
+            return this;
+        }
+        Builder toppings(HashMap<String, Integer> toppings){
+            this.toppings = toppings;
+            return this;
+        }
+        public Food build(){
+            if (this.size == null) {
+                this.size = "M";
+            }
+            if (this.toppings == null){
+                this.toppings = new HashMap<>();
+            }
+            return new Pizza(this);
+        }
+    }
+
     private String size;
-    private ArrayList<String> toppings;
-    public Pizza(){
-        this.toppings = new ArrayList<>();
+    private HashMap<String,Integer> toppings;
+
+    private Pizza(Builder builder){
+        super(builder);
+        this.size = builder.size;
+        this.toppings = builder.toppings;
     }
 
-    public void setSize(String pizzaSize) {
-        this.size = pizzaSize;
-    }
+//    void setSize(String pizzaSize) {
+//        this.size = pizzaSize;
+//    }
 
-    public void removeTopping(String topping) { this.toppings.remove(topping); }
-
-    public void addTopping(String topping) { this.toppings.add(topping); }
-
-    public String getSize() {
+    String getSize() {
         return this.size;
     }
 
-    public ArrayList<String> getToppings() {
+    HashMap<String,Integer> getToppings() {
         return this.toppings;
     }
 
@@ -29,9 +54,14 @@ class Pizza extends Food {
         StringBuilder pizzaString = new StringBuilder();
         pizzaString.append(this.getType());
         pizzaString.append(" pizza with ");
-        for (String topping : this.toppings) {
-            pizzaString.append(topping);
-            pizzaString.append(", ");
+        for (String topping : this.toppings.keySet()) {
+            int topNum = this.toppings.get(topping);
+            if(topNum != 0) {
+                if (topNum > 0) pizzaString.append("+");
+                pizzaString.append(topNum);
+                pizzaString.append(" ").append(topping);
+                pizzaString.append(", ");
+            }
         }
         pizzaString.append("size ");
         pizzaString.append(this.size);
