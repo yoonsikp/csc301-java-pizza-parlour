@@ -80,6 +80,36 @@ At any state, either the `?` or `help` command will print out the list of availa
 ```
 As you can see, the `..` command will allow you to move up a state, while the `selorder` and `seldish` commands allow you to move down into orders and dishes. Other commands are explained in detail.
 
+# JSON Configuration
+
+All menu configuration is done through `menu.json`. This file is necessary for the functioning of the program. An example json is shown below:
+
+```
+{
+	"pizzas": {
+		"neopolitan": {
+			"S": 14,
+			"M": 20,
+			"L": 26
+		},
+		"cheese": {
+			"S": 9,
+			"M": 12,
+			"L": 16
+		}
+	},
+	"toppings": [
+		"mushrooms", "onions", "pepperoni", "olives", "tomatoes", "jalapenos", "chicken", "beef"
+	],
+	"drinks": {
+		"cola": 1.50,
+		"sprite": 1.25
+	},
+	"toppingPrice": 3
+}
+```
+Pizzas are an object containing pizza types, sizes and prices in the `pizzas` key. Toppings are an array of strings in the `toppings` key. Drinks are also an object under `drinks`, containing drink types and prices. Lastly, the topping price is included as another entry in the json file.
+
 # Clean Code and Linting
 
 The coding style was checked using IntelliJ IDEA refactoring and code analysis tools. For code indentation and style, the GoogleStyle plugin was used.
