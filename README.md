@@ -23,6 +23,62 @@ Type '?' at any time for help. End program by typing 'exit'.
 
 ```
 
+# Usage
+
+The PizzaParlour has three major states it can be in. The state is always displayed by the prompt:
+
+* No Order Selected (Main Menu)
+```
+/$ 
+
+```
+* Order Selected (Create Dishes)
+```
+/Order_0$ 
+
+```
+* Dish Selected (Modify or Remove Dish)
+```
+/Order_0/Food_Drink-SPRITE$
+```
+
+At any state, either the `?` or `help` command will print out the list of available commands. These are the commands for each state:
+
+* No Order Selected (Main Menu)
+```
+	menu               	Print out the Current Menu
+	menuitem ITEM      	Print out the Price of a Menu Item
+	neworder           	Create an Order at the Pizza Parlour
+	selorder [ORDER_ID]	Select an Order, can optionally specify ID
+	lsorder            	List all Current Orders and their IDs
+```
+
+* Order Selected (Create Dishes)
+```
+	menu              	Print out the Current Menu
+	menuitem ITEM     	Print out the Price of a Menu Item
+	rmorder           	Cancel the Currently Selected Order
+	deliver           	Request for Delivery Service
+	rmdeliver         	Cancel Delivery Service
+	printdeliver      	View Delivery Details
+	printorder        	Details about the Current Order
+	newpizza          	Add a Pizza to the Current Order
+	newdrink          	Add a Drink to the Current Order
+	seldish           	Select a Dish in the Current Order
+	lsdish            	List all Dishes in the Current Order
+	..                	Deselect Currently Selected Order
+```
+* Dish Selected (Modify or Remove Dish)
+```
+	menu              	Print out the Current Menu
+	menuitem ITEM     	Print out the Price of a Menu Item
+	chdish            	Modify the Current Dish
+	printdish         	Print Info about the Current Dish
+	rmdish            	Remove the Current Dish from the Order
+	..                	Deselect Currently Selected Dish
+```
+As you can see, the `..` command will allow you to move up a state, while the `selorder` and `seldish` commands allow you to move down into orders and dishes. Other commands are explained in detail.
+
 # Clean code
 
 we used IntelliJ refactoring
