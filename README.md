@@ -120,64 +120,28 @@ or documentation.
 Once we finished the pair programming exercise, we split the rest of the functionalities up and began coding separately.
 
 
-# Design Patterns
+# Design Patterns Used
 
-Builder: <br />
-    We implemented two different Builders for construction of Delivery items and Food items.< br/>
-    In the Delivery class, we implemented a non-abstract builder that constructs Delivery items and assigns to them
-an address, type and orderID. Delivery is extended by three different subclasses, UbereatsDelivery, FoodoraDelivery, and
-HouseDelivery. The three subclasses are constructed the same way, and for the most part have the same functionality.
-The key difference is method outputDeliveryDetails, which has a different output in each of the three subclasses.
-In UbereatsDelivery the output is in JSON format, in FoodoraDelivery the output is in CSV format, and in HouseDelivery
-the output is in text format. Since we only wanted to override one method, and the construction is the same
-for all three subclasses, we were able to use a non-abstract Builder class to construct them. <br />
-    In the Food class, we implemented builders in Pizza and Drink that extend an abstract Builder in the Food class.
-We used an abstract Builder in Food and Builder subclasses in Pizza and Drink because Pizza and Drink objects are
-both constructed differently and have different behaviors. Specifically, Pizzas have extra attributes that Drinks
-don't. Thus for Pizza, the abstract Builder in Food has methods that set attributes type and price, and the Builder in
-Pizza first calls the Builder in Food to set type and price, and then itself sets size and toppings. Using an abstract
-Builder class allows for flexibility and provides the possibility of having multiple subclasses that are related but
-have different construction and functionality. <br />
-    We used the builder design pattern in order to break the construction of Delivery and Food objects into two parts:
-collecting arguments and creating an instance. Using this pattern allowed us to fix the issue of constructor tunneling
-by allowing the constructors to instead collect their arguments one at a time. This way, we decrease the change of
-passing incorrect parameters to Delivery and Food constructors. As we've stated above, this pattern also allows
-different classes that have some similarities in construction and functionality to share some construction attributes.
-Additionally, this make the code much easier to read and understand, and improves the code quality as a whole. <br />
-<br />
-Dependency Injection: <br />
-    For each classes that had dependencies on each other, we implemented dependency injection to keep a class that
-has a dependency on another class from instantiate objects of that class, and instead have those objects instantiated
-by other classes and passed in. An example of this pattern is the dependency between Order and Delivery. An Order can
-have a Delivery, but rather than having Order create a new Delivery when needed, we had a separate DeliveryHandler
-that is the only class responsible for making and setting Delivery objects.
+## Builder:
+We implemented two different Builders for construction of Delivery items and Food items. In the Delivery class, we implemented a non-abstract builder that constructs Delivery items and assigns to them an address, type and orderID. Delivery is extended by three different subclasses, UbereatsDelivery, FoodoraDelivery, and HouseDelivery. The three subclasses are constructed the same way, and for the most part have the same functionality. The key difference is method outputDeliveryDetails, which has a different output in each of the three subclasses. In UbereatsDelivery the output is in JSON format, in FoodoraDelivery the output is in CSV format, and in HouseDelivery the output is in text format. Since we only wanted to override one method, and the construction is the same for all three subclasses, we were able to use a non-abstract Builder class to construct them. 
 
-# Design Patterns that were not Used
+In the Food class, we implemented builders in Pizza and Drink that extend an abstract Builder in the Food class. We used an abstract Builder in Food and Builder subclasses in Pizza and Drink because Pizza and Drink objects are both constructed differently and have different behaviors. Specifically, Pizzas have extra attributes that Drinks don't. Thus for Pizza, the abstract Builder in Food has methods that set attributes type and price, and the Builder in Pizza first calls the Builder in Food to set type and price, and then itself sets size and toppings. Using an abstract Builder class allows for flexibility and provides the possibility of having multiple subclasses that are related but have different construction and functionality.
 
-Factory Design Pattern: <br />
-    We considered using a factory design pattern and to have one factory interface that is implemented by a
-pizza factory and a drink factory, and another factory that makes Delivery items. Our original solution in fact used a
-factory design pattern. Using this pattern would have been beneficial to this project because we would have been able
-to delegate responsibility of constructing Delivery and Food objects to a separate factory class. This would fall in
-line with Single Responsibility Principle. It would have made our code less coupled and easy to extend.<br />
-    We didn't end up using the factory design pattern however, since we started using the Builder design pattern, and
-we found that it allowed for much easier construction of Pizza and Drink items that are related but still quite
-different. We also felt as if Builders were more complicated and more flexible than the factory design pattern.
+We used the builder design pattern in order to break the construction of Delivery and Food objects into two parts: collecting arguments and creating an instance. Using this pattern allowed us to fix the issue of constructor tunneling by allowing the constructors to instead collect their arguments one at a time. This way, we decrease the change of passing incorrect parameters to Delivery and Food constructors. As we've stated above, this pattern also allows different classes that have some similarities in construction and functionality to share some construction attributes. Additionally, this make the code much easier to read and understand, and improves the code quality as a whole.
+
+## Dependency Injection:
+For each classes that had dependencies on each other, we implemented dependency injection to keep a class that has a dependency on another class from instantiate objects of that class, and instead have those objects instantiated by other classes and passed in. An example of this pattern is the dependency between Order and Delivery. An Order can have a Delivery, but rather than having Order create a new Delivery when needed, we had a separate DeliveryHandler that is the only class responsible for making and setting Delivery objects.
+
+# Design Patterns Not Used
+
+## Factory Design Pattern:
+We considered using a factory design pattern and to have one factory interface that is implemented by a pizza factory and a drink factory, and another factory that makes Delivery items. Our original solution in fact used a factory design pattern. Using this pattern would have been beneficial to this project because we would have been able to delegate responsibility of constructing Delivery and Food objects to a separate factory class. This would fall in line with Single Responsibility Principle. It would have made our code less coupled and easy to extend. We didn't end up using the factory design pattern however, since we started using the Builder design pattern, and we found that it allowed for much easier construction of Pizza and Drink items that are related but still quite different. We also felt as if Builders were more complicated and more flexible than the factory design pattern.
 
 # Other Design Features
 
-We made attributes of classes private, and implemented and getters and setters and various other methods in each
-class to have low coupling.<br />
+We made attributes of classes private, and implemented and getters and setters and various other methods in each class to have low coupling.
 
 # Changes For Better Code in the Future
 
-We felt as if our TerminalReader was slightly long even though each method specifically deals with a functionality of
-the UI, and the TerminalReader itself has the single job to interact with the command line UI. Future changes to better
-our code will include cutting the TerminalReader functions into smaller functions.
-<br />
-We also felt as if the dependency between Order and Delivery was not ideal, specifically in that printing an Order and
-printing a Delivery requires multiple other function calls to other classes within the original function call. For
-example, to print delivery information, TerminalReader calls printDeliveryDetails in DeliveryHandler, which in turn
-calls outputDeliveryDetails in one of the Delivery subclasses, which in turn calls multiple Order methods to get Order
-data. This is something else we would like to fix in the future.
-<br />
+We felt as if our TerminalReader was slightly long even though each method specifically deals with a functionality of the UI, and the TerminalReader itself has the single job to interact with the command line UI. Future changes to better our code will include cutting the TerminalReader functions into smaller functions.
+We also felt as if the dependency between Order and Delivery was not ideal, specifically in that printing an Order and printing a Delivery requires multiple other function calls to other classes within the original function call. For example, to print delivery information, TerminalReader calls printDeliveryDetails in DeliveryHandler, which in turn calls outputDeliveryDetails in one of the Delivery subclasses, which in turn calls multiple Order methods to get Order data. This is something else we would like to fix in the future.
