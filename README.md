@@ -24,24 +24,28 @@ Type '?' at any time for help. End program by typing 'exit'.
 
 # Usage
 
+## Program States
+
 The PizzaParlour has three major states it can be in. The state is always displayed by the prompt:
 
-### 1. No Order Selected (Main Menu)
+#### 1. No Order Selected (Main Menu)
 ```
 /$ 
 ```
-### 2. Order Selected (Create Dishes)
+#### 2. Order Selected (Create Dishes)
 ```
 /Order_0$ 
 ```
-### 3. Dish Selected (Modify or Remove Dish)
+#### 3. Dish Selected (Modify or Remove Dish)
 ```
 /Order_0/Food_Drink-SPRITE$
 ```
 
+## Program Commands
+
 At any state, either the `?` or `help` command will print out the list of available commands. These are the commands for each state:
 
-### 1. No Order Selected (Main Menu)
+#### 1. No Order Selected (Main Menu)
 ```
 	menu               	Print out the Current Menu
 	menuitem ITEM      	Print out the Price of a Menu Item
@@ -50,7 +54,7 @@ At any state, either the `?` or `help` command will print out the list of availa
 	lsorder            	List all Current Orders and their IDs
 ```
 
-### 2. Order Selected (Create Dishes)
+#### 2. Order Selected (Create Dishes)
 ```
 	menu              	Print out the Current Menu
 	menuitem ITEM     	Print out the Price of a Menu Item
@@ -65,7 +69,7 @@ At any state, either the `?` or `help` command will print out the list of availa
 	lsdish            	List all Dishes in the Current Order
 	..                	Deselect Currently Selected Order
 ```
-### 3. Dish Selected (Modify or Remove Dish)
+#### 3. Dish Selected (Modify or Remove Dish)
 ```
 	menu              	Print out the Current Menu
 	menuitem ITEM     	Print out the Price of a Menu Item
