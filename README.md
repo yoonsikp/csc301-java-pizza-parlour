@@ -20,7 +20,6 @@ You will be presented with the following prompt:
                                                           
 Type '?' at any time for help. End program by typing 'exit'.
 /$ 
-
 ```
 
 # Usage
@@ -30,12 +29,10 @@ The PizzaParlour has three major states it can be in. The state is always displa
 * No Order Selected (Main Menu)
 ```
 /$ 
-
 ```
 * Order Selected (Create Dishes)
 ```
 /Order_0$ 
-
 ```
 * Dish Selected (Modify or Remove Dish)
 ```
