@@ -80,42 +80,38 @@ At any state, either the `?` or `help` command will print out the list of availa
 ```
 As you can see, the `..` command will allow you to move up a state, while the `selorder` and `seldish` commands allow you to move down into orders and dishes. Other commands are explained in detail.
 
-# Clean code
+# Clean Code and Linting
 
-we used IntelliJ refactoring
-We used  GoogleStyle plugin.
+The coding style was checked using IntelliJ IDEA refactoring and code analysis tools. For code indentation and style, the GoogleStyle plugin was used.
 
 # The Project Processes
 
 We first read over the specifications of the assignment paying close attention to details. Then we made a UML diagram
 detailing the classes and methods and the interactions between them. We have included an image of our original UML
-diagram in the root directory of this project. This proved to be a very helpful artifact, as throughout our coding
-experience, we refered back to the diagram many times, making changes to it and sharing the changes with one another.
-Making this diagram definitely cut the amount of time we would have spent doing the project in half. It also allowed us
-both to be on the same page throughout the process.
+diagram in the root directory of this project, and is also inlined here:
 
-Then we split up the functionality into tasks.
+![alt text](https://raw.githubusercontent.com/csc301-winter-2019/pair55-buzilaan-parkyo36/master/UMLbefore.jpg?token=AByI7gC488Q5YtYlBCQT_14-s9m-PA-Tks5coX1OwA%3D%3D "Logo Title Text 1")
 
-yoonsik: terminal reader
+
+This proved to be a very helpful artifact, as throughout our coding experience, we refered back to the diagram many times, making changes to it and sharing the changes with one another. Making this diagram definitely cut the amount of time we would have spent doing the project in half. It also allowed us both to be on the same page throughout the process.
+
+We then split up the functionality into tasks.
+
+## Pair Programming Portion
+
+Yoonsik: Terminal Interface
 Andreea: Menu Loader
 
-We started by pair programming the TerminalReader, where Yoonsik was the driver and Andreea was the navigator.
-In TerminalReader, we implemented most of the command line functionalities, i.e. the UI.
-We finished most of TerminalReader, taking a break once we hit a roadblock and started rethinking strategies.
-At this point, we decided it was a good time to take a break from that particular problem, and we switched gears to
-start working on the Menu Loader, where Andreea was the driver and Yoonsik was the navigator.
-We implemented this functionality very efficiently and then went back to TerminalReader. We finished TerminalReader and
-concluded our first pair programming sprint.
-During both iterations of pair programming, we had a clear idea in our minds about how to implement our data structures
-and functionalities (in large part due to the UML diagram), and we were able to easily start coding and finish not long
-after.
+We started by pair programming the TerminalReader, where Yoonsik was the driver and Andreea was the navigator. In TerminalReader, we implemented most of the command line functionalities, i.e. the UI. We finished most of TerminalReader, taking a break once we hit a roadblock and started rethinking strategies. At this point, we decided it was a good time to take a break from that particular problem, and we switched gears to start working on the Menu Loader, where Andreea was the driver and Yoonsik was the navigator. We implemented this functionality very efficiently and then went back to TerminalReader. We finished TerminalReader and concluded our first pair programming sprint. During both iterations of pair programming, we had a clear idea in our minds about how to implement our data structures and functionalities (in large part due to the UML diagram), and we were able to easily start coding and finish not long after.
+
+## Thoughts on Pair Programming
 Pair programming worked very well for us, as we are both around a similar technical level, neither of us being
 extremely advanced at coding or code design. We have different strengths and weaknesses, and by working
 together, we were able to offer each other constructive advice and teach each other new things. Additionally, we were
 able to learn some new techniques together and practice using them with each other as support and an extra set of
 eyes.
 Although pair programming was very effective for us as a method of generating clean and well-designed code, it did
-waste programmer hours, since the both of us had to work together on the same problem. When the driver was finishing
+waste programmer hours, since both of us had to work together on the same problem. When the driver was finishing
 relatively simple tasks, and the navigator was just watching, it was a little wasteful in terms of time.
 We concluded that pair programming is extremely beneficial for performing difficult tasks that take a lot of thinking
 and design, but not so beneficial when the task at hand includes things like programming very simple blocks of code
@@ -156,7 +152,7 @@ by other classes and passed in. An example of this pattern is the dependency bet
 have a Delivery, but rather than having Order create a new Delivery when needed, we had a separate DeliveryHandler
 that is the only class responsible for making and setting Delivery objects.
 
-# Design Patterns we Debated Using
+# Design Patterns that were not Used
 
 Factory Design Pattern: <br />
     We considered using a factory design pattern and to have one factory interface that is implemented by a
@@ -173,7 +169,7 @@ different. We also felt as if Builders were more complicated and more flexible t
 We made attributes of classes private, and implemented and getters and setters and various other methods in each
 class to have low coupling.<br />
 
-# Changes to make in the future for better code
+# Changes For Better Code in the Future
 
 We felt as if our TerminalReader was slightly long even though each method specifically deals with a functionality of
 the UI, and the TerminalReader itself has the single job to interact with the command line UI. Future changes to better
