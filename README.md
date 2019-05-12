@@ -120,7 +120,7 @@ We first read over the specifications of the assignment paying close attention t
 detailing the classes and methods and the interactions between them. We have included an image of our original UML
 diagram in the root directory of this project, and is also inlined here:
 
-![alt text](https://raw.githubusercontent.com/csc301-winter-2019/pair55-buzilaan-parkyo36/master/UMLbefore.jpg?token=AByI7gC488Q5YtYlBCQT_14-s9m-PA-Tks5coX1OwA%3D%3D "Logo Title Text 1")
+![alt text](https://github.com/yoonsikp/csc301-java-pizza-parlour/blob/master/UMLbefore.jpg?raw=true "Logo Title Text 1")
 
 
 This proved to be a very helpful artifact, as throughout our coding experience, we refered back to the diagram many times, making changes to it and sharing the changes with one another. Making this diagram definitely cut the amount of time we would have spent doing the project in half. It also allowed us both to be on the same page throughout the process.
